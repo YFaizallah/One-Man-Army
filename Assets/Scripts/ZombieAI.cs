@@ -15,7 +15,7 @@ public class ZombieAI : MonoBehaviour
     private float lastAttackTime;
 
     [Header("Health")]
-    public int maxHealth = 2;         // Zombie dies after 2 bullets
+    public int maxHealth = 10;         // Zombie dies after 2 bullets
     private int currentHealth;
     private bool isDead = false;
 
