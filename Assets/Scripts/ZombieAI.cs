@@ -51,6 +51,14 @@ public class ZombieAI : MonoBehaviour
             audioSource.playOnAwake = false;
         }
         
+        // Freeze Y position to prevent falling when idle
+        if (rb != null)
+        {
+            rb.constraints = RigidbodyConstraints.FreezeRotationX | 
+                           RigidbodyConstraints.FreezeRotationZ | 
+                           RigidbodyConstraints.FreezePositionY;
+        }
+        
         currentHealth = maxHealth;
 
         if (player != null)
@@ -70,7 +78,12 @@ public class ZombieAI : MonoBehaviour
             // Player is too far - stay still
             animator.SetBool("isWalking", false);
             animator.SetBool("isAttacking", false);
+            animator.SetBool("isFar", true);
             return;
+        }
+        else
+        {
+            animator.SetBool("isFar", false);
         }
 
         // Rotate zombie toward player
@@ -141,8 +154,14 @@ public class ZombieAI : MonoBehaviour
 
     void Die()
     {
-        rb.isKinematic = true;
         isDead = true;
+        
+        // Unfreeze Y position for death animation
+        if (rb != null)
+        {
+            rb.isKinematic = true;
+            rb.constraints = RigidbodyConstraints.None; // Remove all constraints for death animation
+        }
         
         // Play death sound once
         if (deathSound != null && audioSource != null)
