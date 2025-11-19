@@ -10,6 +10,7 @@ public class ZombieAI : MonoBehaviour
     [Header("Movement & Combat")]
     public float moveSpeed = 2f;      // Walking speed
     public float attackDistance = 2f; // Distance to start attacking
+    public float detectionRange = 25f; // Range to detect and chase player
     public int damage = 1;            // Damage per attack
     private float attackCooldown = 1f; // Time between attacks
     private float lastAttackTime;
@@ -62,6 +63,15 @@ public class ZombieAI : MonoBehaviour
 
         Vector3 direction = player.position - transform.position;
         float distance = direction.magnitude;
+
+        // Check if player is within detection range
+        if (distance > detectionRange)
+        {
+            // Player is too far - stay still
+            animator.SetBool("isWalking", false);
+            animator.SetBool("isAttacking", false);
+            return;
+        }
 
         // Rotate zombie toward player
         Vector3 lookDir = new Vector3(direction.x, 0, direction.z);
