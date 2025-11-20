@@ -191,6 +191,7 @@ public class DialogueUI : MonoBehaviour
     private DialogueLine[] sentences;
     private int index;
     private bool activeDialogue = false;
+    private bool canAdvance = false; // Prevents advancing on the same frame dialogue starts
 
     void Awake()
     {
@@ -207,9 +208,15 @@ public class DialogueUI : MonoBehaviour
 
     void Update()
     {
-        if (activeDialogue && Input.GetKeyDown(KeyCode.E))
+        if (activeDialogue && canAdvance && Input.GetKeyDown(KeyCode.E))
         {
             NextSentence();
+        }
+        
+        // Allow advancing after the first frame
+        if (activeDialogue && !canAdvance)
+        {
+            canAdvance = true;
         }
     }
 
@@ -223,19 +230,21 @@ public class DialogueUI : MonoBehaviour
         if (lines == null || lines.Length == 0) return;
 
         sentences = lines;
-        index = 0;
+        index = -1; // Start at -1 so first NextSentence() call shows index 0
         activeDialogue = true;
+        canAdvance = false; // Reset the flag when dialogue starts
 
         dialoguePanel.SetActive(true);
         dialogueText.gameObject.SetActive(true);
-
-        ShowCurrentSentence();
 
         if (playerUICanvas != null)
             playerUICanvas.SetActive(false);
 
         SetPlayerIdleAndFreeze();
         FreezeZombies(true);
+        
+        // Show the first sentence immediately
+        NextSentence();
     }
 
     public void NextSentence()
@@ -269,6 +278,7 @@ public class DialogueUI : MonoBehaviour
     public void EndDialogue()
     {
         activeDialogue = false;
+        canAdvance = false; // Reset flag
         dialoguePanel.SetActive(false);
         dialogueText.gameObject.SetActive(false);
 
