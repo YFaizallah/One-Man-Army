@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: 071ef59ef56600a49b729f0883407542
+guid: 13190f9c4837a7145b41cbd26fb3d3eb
 ModelImporter:
   serializedVersion: 22200
   internalIDToNameTable: []
@@ -31,11 +31,11 @@ ModelImporter:
     extraUserProperties: []
     clipAnimations:
     - serializedVersion: 16
-      name: Girl_Terrified
+      name: Walking
       takeName: mixamo.com
       internalID: -203655887218126122
       firstFrame: 0
-      lastFrame: 1200
+      lastFrame: 61
       wrapMode: 0
       orientationOffsetY: 0
       level: 0

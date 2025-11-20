@@ -192,6 +192,7 @@ public class DialogueUI : MonoBehaviour
     private int index;
     private bool activeDialogue = false;
     private bool canAdvance = false; // Prevents advancing on the same frame dialogue starts
+    private GameObject currentNPC; // Track which NPC started the dialogue
 
     void Awake()
     {
@@ -227,9 +228,15 @@ public class DialogueUI : MonoBehaviour
 
     public void StartDialogue(DialogueLine[] lines)
     {
+        StartDialogue(lines, null);
+    }
+
+    public void StartDialogue(DialogueLine[] lines, GameObject npc)
+    {
         if (lines == null || lines.Length == 0) return;
 
         sentences = lines;
+        currentNPC = npc;
         index = -1; // Start at -1 so first NextSentence() call shows index 0
         activeDialogue = true;
         canAdvance = false; // Reset the flag when dialogue starts
@@ -292,6 +299,13 @@ public class DialogueUI : MonoBehaviour
 
         UnfreezePlayer();
         FreezeZombies(false);
+
+        // Notify the NPC that dialogue has ended
+        if (currentNPC != null)
+        {
+            currentNPC.SendMessage("EndDialogue", SendMessageOptions.DontRequireReceiver);
+            currentNPC = null;
+        }
     }
 
     // ------------------ FREEZE PLAYER & IDLE ------------------
