@@ -30,4 +30,8 @@ public class PlayerHealth : MonoBehaviour
         // You can show fail UI here
         //SceneManager.LoadScene(SceneManager.GetActiveScene().name);
     }
+    void OnEnable()
+    {
+        currentHealth = maxHealth;
+    }
 }
