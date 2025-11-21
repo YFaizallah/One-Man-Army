@@ -58,8 +58,8 @@ public class LevelManager : MonoBehaviour
     {
         if (spawnedArrow != null)
             spawnedArrow.SetActive(false);
-        //if (arrowPrefab != null)
-        //    arrowPrefab.SetActive(false);
+        if (arrowPrefab != null)
+            arrowPrefab.SetActive(false);
         // Hide UI initially
         losePanel.SetActive(false);
         scriptPanel.SetActive(false);
@@ -89,13 +89,22 @@ public class LevelManager : MonoBehaviour
             GameObject player = GameObject.FindGameObjectWithTag("Player");
             if (player != null)
             {
-                // Position above player
-                //arrowPrefab.transform.position = player.transform.position + Vector3.up * 2f;
-                // Rotate to look at NPC
-                arrowPrefab.transform.LookAt(npcTarget.position);
+
+                //  Compute direction from player to NPC in world space
+                Vector3 dirToNPC = npcTarget.position - player.transform.position;
+
+                //  Project direction relative to player forward
+                Vector3 localDir = player.transform.InverseTransformDirection(dirToNPC);
+
+                //  Calculate angle in degrees
+                float angle = Mathf.Atan2(localDir.x, localDir.z) * Mathf.Rad2Deg;
+
+                //  Rotate arrow around Z axis
+                arrowPrefab.transform.rotation = Quaternion.Euler(0, 0, -angle);
             }
         }
     }
+
 
     public void ZombieKilled()
     {
@@ -131,40 +140,6 @@ public class LevelManager : MonoBehaviour
             objectiveText.gameObject.SetActive(false); // only hide the text
     }
 
-    //IEnumerator SpawnArrowAfterDelay(float delay)
-    //{
-    //    yield return new WaitForSeconds(delay);
-
-    //    if (arrowPrefab != null && npcTarget != null)
-    //    {
-    //        //// Instantiate arrow as child of your UI Canvas
-    //        //spawnedArrow = Instantiate(arrowPrefab, objectiveCanvas.transform); // Use your main Canvas
-    //        //spawnedArrow.transform.localPosition = new Vector3(0, 100, 0); // Adjust as needed
-    //        //spawnedArrow.transform.localRotation = Quaternion.identity;
-
-    //        spawnedArrow = Instantiate(arrowPrefab, objectiveCanvas.transform);
-
-    //        // Get RectTransform of the spawned arrow
-    //        RectTransform rt = spawnedArrow.GetComponent<RectTransform>();
-    //        if (rt != null)
-    //        {
-    //            rt.anchoredPosition = new Vector2(0, 180);   // your Y=180, X=0
-    //            rt.sizeDelta = new Vector2(100, 100);        // width & height
-    //            rt.anchorMin = rt.anchorMax = new Vector2(0.5f, 0.5f); // anchors
-    //            rt.pivot = new Vector2(0.5f, 0.5f);         // pivot
-    //            rt.localRotation = Quaternion.Euler(80, 0, 0); // rotation x=80
-    //            rt.localScale = Vector3.one;                // scale x,y,z =1
-    //        }
-    //        arrowActive = true;
-    //        spawnedArrow.SetActive(true); // Make sure it's active
-    //        Debug.Log("Arrow spawned and activated!");
-    //    }
-    //    else
-    //    {
-    //        Debug.Log("Arrow Not spawned and Not activated!");
-    //    }
-    //}
-
 
     IEnumerator SpawnArrowAfterDelay(float delay)
     {
@@ -182,10 +157,11 @@ public class LevelManager : MonoBehaviour
     public void PlayerTalkedToNPC()
     {
         // Call this from NPC interaction script
-        if (spawnedArrow != null)
+        if (arrowPrefab != null)
         {
-            Destroy(spawnedArrow);
-            arrowActive = false;
+            arrowPrefab.SetActive(false);  // Hide it
+            arrowActive = false;           // Stop updating rotation
+            Debug.Log("Arrow hidden after dialogue.");
         }
     }
 
