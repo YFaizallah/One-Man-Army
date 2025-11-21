@@ -126,6 +126,7 @@ public class NPCManScript : MonoBehaviour
 
     [Header("Dialogue")]
     public DialogueLine[] dialogueLines; // <-- now you can assign both text & image
+    //public LevelManager levelManager;
 
     [Header("Interaction Settings")]
     public float detectionRange = 8f;
@@ -135,6 +136,11 @@ public class NPCManScript : MonoBehaviour
     private bool playerInRange = false;
     private bool dialogueStarted = false;
     private bool hasTalkedOnce = false;
+
+    
+
+
+
 
     void Start()
     {
@@ -206,6 +212,12 @@ public class NPCManScript : MonoBehaviour
             animator.SetBool("NPCTalked", false);
             animator.SetBool("PlayerNear", false);
         }
+
+        if (LevelManager.instance != null && LevelManager.instance.spawnedArrow != null)
+        {
+            Destroy(LevelManager.instance.spawnedArrow);
+            LevelManager.instance.arrowActive = false;
+        }
     }
 
     void LookAtPlayer()
@@ -217,4 +229,17 @@ public class NPCManScript : MonoBehaviour
         Quaternion lookRotation = Quaternion.LookRotation(direction);
         transform.rotation = Quaternion.Slerp(transform.rotation, lookRotation, Time.deltaTime * rotationSpeed);
     }
+
+    //void Awake()
+    //{
+    //    if (instance == null)
+    //    {
+    //        instance = this;
+    //        DontDestroyOnLoad(gameObject); // Optional: keep across scenes
+    //    }
+    //    else
+    //    {
+    //        Destroy(gameObject); // Prevent duplicates
+    //    }
+    //}
 }
