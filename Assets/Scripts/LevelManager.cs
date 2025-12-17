@@ -1,22 +1,34 @@
 using UnityEngine;
-using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 using TMPro;
-
+using System.Collections;
 
 public class LevelManager : MonoBehaviour
 {
     [Header("Sequence Settings")]
-    public int sequence1Zombies = 10; // Zombies to kill in sequence 1
+    public int sequence1Zombies = 10; // Zombies to kill for barrier
     public GameObject zombiePrefab;
     public Transform[] spawnPoints;
 
+    [Header("Barrier")]
+    public GameObject barrier;
+
     [Header("UI")]
-    public TMP_Text sequenceText; // Shows current sequence info
-    public TMP_Text zombieCountText; // Shows zombies killed
-    public GameObject scriptPanel; // Panel to show story script
-    public TMP_Text scriptText; // Text for the story
+    public GameObject objectiveCanvas;
+    public TMP_Text objectiveText;
+    public TMP_Text sequenceText;
+    public TMP_Text zombieCountText;
+    public GameObject scriptPanel;
+    public TMP_Text scriptText;
     public GameObject losePanel;
+
+    [Header("Objective Arrow")]
+    public GameObject arrowPrefab;  // Assign UI or 3D arrow prefab
+    public Transform npcTarget;     // The NPC to point to
+
+    [HideInInspector] public GameObject spawnedArrow;  // Accessible to NPC scripts
+    [HideInInspector] public bool arrowActive = false; // Accessible to NPC scripts
+    private bool arrowSpawned = false;
 
     [Header("Story Scripts")]
     public string sequence1Script = "You saved the person! But more zombies are coming...";
@@ -25,126 +37,195 @@ public class LevelManager : MonoBehaviour
     private int zombiesKilled = 0;
     private bool gameEnded = false;
 
+    public static LevelManager instance;
+
+    void Awake()
+    {
+        // Singleton pattern
+        if (instance == null)
+        {
+            instance = this;
+            // Uncomment if you want this object to persist across scenes
+            // DontDestroyOnLoad(gameObject);
+        }
+        else
+        {
+            Destroy(gameObject);
+        }
+    }
+
     void Start()
     {
+        if (spawnedArrow != null)
+            spawnedArrow.SetActive(false);
+        if (arrowPrefab != null)
+            arrowPrefab.SetActive(false);
+        // Hide UI initially
         losePanel.SetActive(false);
         scriptPanel.SetActive(false);
-        
+        if (objectiveCanvas != null)
+            objectiveCanvas.SetActive(false);
+
         UpdateUI();
         SpawnZombies(sequence1Zombies);
+
+        // Show objective canvas after 15 seconds
+        StartCoroutine(ShowObjectiveCanvas());
+    }
+
+    IEnumerator ShowObjectiveCanvas()
+    {
+        yield return new WaitForSeconds(15f);
+        if (objectiveCanvas != null)
+            objectiveCanvas.SetActive(true);
+
+        UpdateObjectiveText();
     }
 
     void Update()
     {
-        // No timer logic needed
+        if (arrowActive && arrowPrefab != null && npcTarget != null)
+        {
+            GameObject player = GameObject.FindGameObjectWithTag("Player");
+            if (player != null)
+            {
+
+                //  Compute direction from player to NPC in world space
+                Vector3 dirToNPC = npcTarget.position - player.transform.position;
+
+                //  Project direction relative to player forward
+                Vector3 localDir = player.transform.InverseTransformDirection(dirToNPC);
+
+                //  Calculate angle in degrees
+                float angle = Mathf.Atan2(localDir.x, localDir.z) * Mathf.Rad2Deg;
+
+                //  Rotate arrow around Z axis
+                arrowPrefab.transform.rotation = Quaternion.Euler(0, 0, -angle);
+            }
+        }
     }
 
-    // Call this when a zombie dies
+
     public void ZombieKilled()
     {
         if (gameEnded) return;
 
         zombiesKilled++;
         UpdateUI();
+        UpdateObjectiveText();
 
-        // Check if sequence 1 is complete
-        if (currentSequence == 1 && zombiesKilled >= sequence1Zombies)
+        // Check if barrier objective completed
+        if (zombiesKilled >= sequence1Zombies)
         {
+            RemoveBarrier();
+
+            // Spawn arrow to NPC after 30 seconds (only once)
+            if (!arrowSpawned)
+            {
+                arrowSpawned = true;
+                StartCoroutine(SpawnArrowAfterDelay(30f));
+            }
+        }
+
+        if (currentSequence == 1 && zombiesKilled >= sequence1Zombies)
             CompleteSequence1();
+    }
+
+    void RemoveBarrier()
+    {
+        if (barrier != null)
+            barrier.SetActive(false);
+
+        if (objectiveText != null)
+            objectiveText.gameObject.SetActive(false); // only hide the text
+    }
+
+
+    IEnumerator SpawnArrowAfterDelay(float delay)
+    {
+        yield return new WaitForSeconds(delay);
+
+        if (arrowPrefab != null && npcTarget != null)
+        {
+            arrowPrefab.SetActive(true); // Show the arrow
+            arrowActive = true;
+            Debug.Log("Arrow is now visible!");
         }
     }
 
-    // Call this when the player dies
-    public void PlayerDied()
-    {
-        if (gameEnded) return;
-        LoseLevel();
-    }
 
-    void CompleteSequence1()
+    public void PlayerTalkedToNPC()
     {
-        Debug.Log("Sequence 1 Complete!");
-        
-        // Show the story script
-        scriptPanel.SetActive(true);
-        scriptText.text = sequence1Script;
-        Time.timeScale = 0f; // Pause game while showing script
-        
-        // You can add a button to continue or use Invoke to auto-continue
-        // For now, you'll need to add a button that calls ContinueToSequence2()
-    }
-
-    public void ContinueToSequence2()
-    {
-        // Hide script panel
-        scriptPanel.SetActive(false);
-        Time.timeScale = 1f; // Resume game
-        
-        // TODO: Start sequence 2 (you can add this later)
-        Debug.Log("Ready for Sequence 2!");
+        // Call this from NPC interaction script
+        if (arrowPrefab != null)
+        {
+            arrowPrefab.SetActive(false);  // Hide it
+            arrowActive = false;           // Stop updating rotation
+            Debug.Log("Arrow hidden after dialogue.");
+        }
     }
 
     void UpdateUI()
     {
         if (sequenceText != null)
             sequenceText.text = $"Sequence {currentSequence}";
-        
+
         if (zombieCountText != null)
+            zombieCountText.text = $"Zombies: {zombiesKilled} / {sequence1Zombies}";
+    }
+
+    void UpdateObjectiveText()
+    {
+        if (objectiveText != null)
         {
-            int remaining = 0;
-            if (currentSequence == 1)
-                remaining = sequence1Zombies - zombiesKilled;
-            
-            zombieCountText.text = $"Zombies: {zombiesKilled} / {(currentSequence == 1 ? sequence1Zombies : 0)}";
+            int remaining = Mathf.Max(sequence1Zombies - zombiesKilled, 0);
+            objectiveText.text = $"Kill {sequence1Zombies} Zombies to take down the barrier\n{remaining} remaining";
         }
+    }
+
+    void CompleteSequence1()
+    {
+        scriptPanel.SetActive(true);
+        scriptText.text = sequence1Script;
+        Time.timeScale = 0f;
+    }
+
+    public void ContinueToSequence2()
+    {
+        scriptPanel.SetActive(false);
+        Time.timeScale = 1f;
     }
 
     void LoseLevel()
     {
-        Debug.Log("You lost!");
         gameEnded = true;
         losePanel.SetActive(true);
         Time.timeScale = 0f;
     }
 
+    public void PlayerDied()
+    {
+        LoseLevel();
+    }
+
     void SpawnZombies(int count)
     {
-        if (zombiePrefab == null)
-        {
-            Debug.LogError("Zombie prefab is not assigned!");
-            return;
-        }
+        if (zombiePrefab == null) return;
 
         for (int i = 0; i < count; i++)
         {
-            Vector3 spawnPosition;
+            Vector3 spawnPos = (spawnPoints.Length > 0) ?
+                spawnPoints[Random.Range(0, spawnPoints.Length)].position :
+                new Vector3(Random.Range(-10f, 10f), 0, Random.Range(-10f, 10f));
 
-            // If spawn points are defined, use them
-            if (spawnPoints != null && spawnPoints.Length > 0)
-            {
-                int randomIndex = Random.Range(0, spawnPoints.Length);
-                spawnPosition = spawnPoints[randomIndex].position;
-            }
-            else
-            {
-                // Random spawn around origin (customize as needed)
-                float randomX = Random.Range(-10f, 10f);
-                float randomZ = Random.Range(-10f, 10f);
-                spawnPosition = new Vector3(randomX, 6, randomZ);
-            }
+            GameObject zombie = Instantiate(zombiePrefab, spawnPos, Quaternion.identity);
 
-            // Spawn the zombie
-            GameObject zombie = Instantiate(zombiePrefab, spawnPosition, Quaternion.identity);
-            
-            // Optionally: assign player reference to zombie
             GameObject player = GameObject.FindGameObjectWithTag("Player");
             if (player != null)
             {
-                ZombieAI zombieAI = zombie.GetComponent<ZombieAI>();
-                if (zombieAI != null)
-                {
-                    zombieAI.player = player.transform;
-                }
+                ZombieAI ai = zombie.GetComponent<ZombieAI>();
+                if (ai != null)
+                    ai.player = player.transform;
             }
         }
     }
