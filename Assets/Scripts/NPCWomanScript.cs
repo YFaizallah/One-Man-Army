@@ -193,11 +193,16 @@ public class NPCWomanScript : MonoBehaviour
                 if (!playerInRange)
                 {
                     playerInRange = true;
-                    if (!dialogueStarted)
-                        DialogueUI.instance.ShowPressE(true);
+                }
+                
+                // Always show popup when player is in range and dialogue hasn't started
+                if (!dialogueStarted && DialogueUI.instance != null)
+                {
+                    DialogueUI.instance.ShowPressE(true);
                 }
 
-                if (Input.GetKeyDown(interactKey) && !dialogueStarted)
+                // Check for E key press to start dialogue
+                if (Input.GetKeyDown(interactKey) && !dialogueStarted && DialogueUI.instance != null)
                 {
                     StartDialogue();
                 }
@@ -207,7 +212,8 @@ public class NPCWomanScript : MonoBehaviour
                 if (playerInRange)
                 {
                     playerInRange = false;
-                    DialogueUI.instance.ShowPressE(false);
+                    if (DialogueUI.instance != null)
+                        DialogueUI.instance.ShowPressE(false);
                     dialogueStarted = false;
                 }
             }
@@ -222,10 +228,14 @@ public class NPCWomanScript : MonoBehaviour
     void StartDialogue()
     {
         dialogueStarted = true;
-        DialogueUI.instance.ShowPressE(false);
+        
+        // Hide the interaction popup when dialogue starts
+        if (DialogueUI.instance != null)
+            DialogueUI.instance.ShowPressE(false);
 
-        if (animator != null)
-           // animator.SetBool("isTalked", true);
+        // Optional: Set talking animation if you have one
+        // if (animator != null)
+        //     animator.SetBool("isTalking", true);
 
         DialogueUI.instance.StartDialogue(dialogueLines, gameObject);
     }

@@ -49,15 +49,23 @@ public class NPCManScript : MonoBehaviour
                 playerInRange = true;
                 if (animator != null && !hasTalkedOnce)
                     animator.SetBool("PlayerNear", true);
-                if (!dialogueStarted)
-                    DialogueUI.instance.ShowPressE(true);
+            }
+            
+            // Only show popup if not talking and haven't talked yet
+            if (!dialogueStarted && !hasTalkedOnce && DialogueUI.instance != null)
+            {
+                DialogueUI.instance.ShowPressE(true);
             }
 
             if (!hasTalkedOnce || dialogueStarted)
                 LookAtPlayer();
 
-            if (Input.GetKeyDown(interactKey) && !dialogueStarted)
+            // Check for E key press - only allow if dialogue not active and hasn't talked yet
+            if (Input.GetKeyDown(interactKey) && !dialogueStarted && !hasTalkedOnce && 
+                DialogueUI.instance != null && !DialogueUI.instance.IsActive())
+            {
                 StartDialogue();
+            }
         }
         else
         {
@@ -66,8 +74,8 @@ public class NPCManScript : MonoBehaviour
                 playerInRange = false;
                 if (animator != null && !hasTalkedOnce)
                     animator.SetBool("PlayerNear", false);
-                DialogueUI.instance.ShowPressE(false);
-                dialogueStarted = false;
+                if (DialogueUI.instance != null)
+                    DialogueUI.instance.ShowPressE(false);
             }
         }
     }
@@ -75,18 +83,24 @@ public class NPCManScript : MonoBehaviour
     void StartDialogue()
     {
         dialogueStarted = true;
-        DialogueUI.instance.ShowPressE(false);
+        
+        // Hide the interaction popup when dialogue starts
+        if (DialogueUI.instance != null)
+            DialogueUI.instance.ShowPressE(false);
 
         if (animator != null)
             animator.SetBool("NPCTalked", true);
+            
         if (LevelManager.instance != null && LevelManager.instance.arrowPrefab != null)
         {
             LevelManager.instance.arrowPrefab.SetActive(false);
             LevelManager.instance.arrowActive = false;
             Debug.Log("Arrow hidden after dialogue.");
         }
-        // Pass dialogue lines with optional images
-        DialogueUI.instance.StartDialogue(dialogueLines);
+        
+        // Start the dialogue with proper NPC reference
+        if (DialogueUI.instance != null)
+            DialogueUI.instance.StartDialogue(dialogueLines, gameObject);
     }
 
     public void EndDialogue()
