@@ -1,83 +1,232 @@
 using UnityEngine;
-using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 using TMPro;
-
+using System.Collections;
 
 public class LevelManager : MonoBehaviour
 {
-    [Header("Level Settings")]
-    public float levelTime = 45f; // 45 seconds
-    public int totalZombies = 5;
+    [Header("Sequence Settings")]
+    public int sequence1Zombies = 10; // Zombies to kill for barrier
+    public GameObject zombiePrefab;
+    public Transform[] spawnPoints;
+
+    [Header("Barrier")]
+    public GameObject barrier;
 
     [Header("UI")]
-    public TMP_Text timerText;
-    public GameObject winPanel;
+    public GameObject objectiveCanvas;
+    public TMP_Text objectiveText;
+    public TMP_Text sequenceText;
+    public TMP_Text zombieCountText;
+    public GameObject scriptPanel;
+    public TMP_Text scriptText;
     public GameObject losePanel;
 
-    private float currentTime;
+    [Header("Objective Arrow")]
+    public GameObject arrowPrefab;  // Assign UI or 3D arrow prefab
+    public Transform npcTarget;     // The NPC to point to
+
+    [HideInInspector] public GameObject spawnedArrow;  // Accessible to NPC scripts
+    [HideInInspector] public bool arrowActive = false; // Accessible to NPC scripts
+    private bool arrowSpawned = false;
+
+    [Header("Story Scripts")]
+    public string sequence1Script = "You saved the person! But more zombies are coming...";
+
+    private int currentSequence = 1;
     private int zombiesKilled = 0;
-    private bool levelEnded = false;
+    private bool gameEnded = false;
+
+    public static LevelManager instance;
+
+    void Awake()
+    {
+        // Singleton pattern
+        if (instance == null)
+        {
+            instance = this;
+            // Uncomment if you want this object to persist across scenes
+            // DontDestroyOnLoad(gameObject);
+        }
+        else
+        {
+            Destroy(gameObject);
+        }
+    }
 
     void Start()
     {
-        currentTime = levelTime;
-        winPanel.SetActive(false);
+        if (spawnedArrow != null)
+            spawnedArrow.SetActive(false);
+        if (arrowPrefab != null)
+            arrowPrefab.SetActive(false);
+        // Hide UI initially
         losePanel.SetActive(false);
+        scriptPanel.SetActive(false);
+        if (objectiveCanvas != null)
+            objectiveCanvas.SetActive(false);
+
+        UpdateUI();
+        SpawnZombies(sequence1Zombies);
+
+        // Show objective canvas after 15 seconds
+        StartCoroutine(ShowObjectiveCanvas());
+    }
+
+    IEnumerator ShowObjectiveCanvas()
+    {
+        yield return new WaitForSeconds(15f);
+        if (objectiveCanvas != null)
+            objectiveCanvas.SetActive(true);
+
+        UpdateObjectiveText();
     }
 
     void Update()
     {
-        if (levelEnded) return;
-
-        // Countdown timer
-        currentTime -= Time.deltaTime;
-        timerText.text = Mathf.Ceil(currentTime).ToString();
-
-        // Check lose by time
-        if (currentTime <= 0)
+        if (arrowActive && arrowPrefab != null && npcTarget != null)
         {
-            LoseLevel();
+            GameObject player = GameObject.FindGameObjectWithTag("Player");
+            if (player != null)
+            {
+
+                //  Compute direction from player to NPC in world space
+                Vector3 dirToNPC = npcTarget.position - player.transform.position;
+
+                //  Project direction relative to player forward
+                Vector3 localDir = player.transform.InverseTransformDirection(dirToNPC);
+
+                //  Calculate angle in degrees
+                float angle = Mathf.Atan2(localDir.x, localDir.z) * Mathf.Rad2Deg;
+
+                //  Rotate arrow around Z axis
+                arrowPrefab.transform.rotation = Quaternion.Euler(0, 0, -angle);
+            }
         }
     }
 
-    // Call this when a zombie dies
+
     public void ZombieKilled()
     {
-        if (levelEnded) return;
+        if (gameEnded) return;
 
         zombiesKilled++;
-        if (zombiesKilled >= totalZombies)
+        UpdateUI();
+        UpdateObjectiveText();
+
+        // Check if barrier objective completed
+        if (zombiesKilled >= sequence1Zombies)
         {
-            WinLevel();
+            RemoveBarrier();
+
+            // Spawn arrow to NPC after 30 seconds (only once)
+            if (!arrowSpawned)
+            {
+                arrowSpawned = true;
+                StartCoroutine(SpawnArrowAfterDelay(30f));
+            }
+        }
+
+        if (currentSequence == 1 && zombiesKilled >= sequence1Zombies)
+            CompleteSequence1();
+    }
+
+    void RemoveBarrier()
+    {
+        if (barrier != null)
+            barrier.SetActive(false);
+
+        if (objectiveText != null)
+            objectiveText.gameObject.SetActive(false); // only hide the text
+    }
+
+
+    IEnumerator SpawnArrowAfterDelay(float delay)
+    {
+        yield return new WaitForSeconds(delay);
+
+        if (arrowPrefab != null && npcTarget != null)
+        {
+            arrowPrefab.SetActive(true); // Show the arrow
+            arrowActive = true;
+            Debug.Log("Arrow is now visible!");
         }
     }
 
-    // Call this when the player dies
-    public void PlayerDied()
+
+    public void PlayerTalkedToNPC()
     {
-        if (levelEnded) return;
-        LoseLevel();
+        // Call this from NPC interaction script
+        if (arrowPrefab != null)
+        {
+            arrowPrefab.SetActive(false);  // Hide it
+            arrowActive = false;           // Stop updating rotation
+            Debug.Log("Arrow hidden after dialogue.");
+        }
     }
 
-    void WinLevel()
+    void UpdateUI()
     {
-        Debug.Log("You won!");
-        levelEnded = true;
-        winPanel.SetActive(true);
-        // Pause game if needed
+        if (sequenceText != null)
+            sequenceText.text = $"Sequence {currentSequence}";
+
+        if (zombieCountText != null)
+            zombieCountText.text = $"Zombies: {zombiesKilled} / {sequence1Zombies}";
+    }
+
+    void UpdateObjectiveText()
+    {
+        if (objectiveText != null)
+        {
+            int remaining = Mathf.Max(sequence1Zombies - zombiesKilled, 0);
+            objectiveText.text = $"Kill {sequence1Zombies} Zombies to take down the barrier\n{remaining} remaining";
+        }
+    }
+
+    void CompleteSequence1()
+    {
+        scriptPanel.SetActive(true);
+        scriptText.text = sequence1Script;
         Time.timeScale = 0f;
-        //gameEndManager.ShowWin();
-        //SceneManager.LoadScene("WinLevel");
+    }
+
+    public void ContinueToSequence2()
+    {
+        scriptPanel.SetActive(false);
+        Time.timeScale = 1f;
     }
 
     void LoseLevel()
     {
-        Debug.Log("You lost!");
-        levelEnded = true;
+        gameEnded = true;
         losePanel.SetActive(true);
         Time.timeScale = 0f;
-        //gameEndManager.ShowLose();
-        //SceneManager.LoadScene("LoseLevel");
+    }
+
+    public void PlayerDied()
+    {
+        LoseLevel();
+    }
+
+    void SpawnZombies(int count)
+    {
+        if (zombiePrefab == null) return;
+
+        for (int i = 0; i < count; i++)
+        {
+            Vector3 spawnPos = (spawnPoints.Length > 0) ?
+                spawnPoints[Random.Range(0, spawnPoints.Length)].position :
+                new Vector3(Random.Range(-10f, 10f), 0, Random.Range(-10f, 10f));
+
+            GameObject zombie = Instantiate(zombiePrefab, spawnPos, Quaternion.identity);
+
+            GameObject player = GameObject.FindGameObjectWithTag("Player");
+            if (player != null)
+            {
+                ZombieAI ai = zombie.GetComponent<ZombieAI>();
+                if (ai != null)
+                    ai.player = player.transform;
+            }
+        }
     }
 }

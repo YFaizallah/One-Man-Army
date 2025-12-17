@@ -4,53 +4,68 @@ using UnityEngine.AI;
 public class ZombieAI : MonoBehaviour
 {
     [Header("References")]
-    public Transform player;          // Assign player in Inspector
-    private PlayerHealth playerHealth; // Player health script
+    public Transform player;          // Player target
+    private PlayerHealth playerHealth;
 
     [Header("Movement & Combat")]
-    public float moveSpeed = 2f;      // Walking speed
-    public float attackDistance = 2f; // Distance to start attacking
-    public float detectionRange = 25f; // Range to detect and chase player
-    public int damage = 1;            // Damage per attack
-    private float attackCooldown = 1f; // Time between attacks
+    public float moveSpeed = 2f;
+    public float attackDistance = 2f;
+    public float detectionRange = 25f;
+    public int damage = 1;
+    private float attackCooldown = 1f;
     private float lastAttackTime;
 
     [Header("Health")]
-    public int maxHealth = 10;         // Zombie dies after 2 bullets
+    public int maxHealth = 10;
     private int currentHealth;
     private bool isDead = false;
 
     [Header("Audio")]
-    public AudioClip deathSound;      // Assign death audio in Inspector
-    public AudioClip attackSound;     // Assign attack audio in Inspector
-    public AudioClip nearPlayerSound; // Assign near player audio in Inspector
-
-
-    public int distanceToPlayerSound = 5; // Distance to play near player sound
+    public AudioClip deathSound;
+    public AudioClip attackSound;
+    public AudioClip nearPlayerSound;
+    public int distanceToPlayerSound = 5;
     private AudioSource audioSource;
     private bool hasPlayedNearSound = false;
 
     private Rigidbody rb;
     private CapsuleCollider capsule;
-
-
     private Animator animator;
+
+    void Awake()
+    {
+        // Auto-assign player if null
+        if (player == null)
+        {
+            GameObject playerObj = GameObject.FindWithTag("Player");
+            if (playerObj != null)
+                player = playerObj.transform;
+            else
+                Debug.LogError("Player not found! Make sure Player has tag 'Player'.");
+        }
+    }
 
     void Start()
     {
         animator = GetComponent<Animator>();
-        rb = GetComponent<Rigidbody>();  // Get Zombie Rigidbody
+        rb = GetComponent<Rigidbody>();
         capsule = GetComponent<CapsuleCollider>();
-        
-        // Get or add AudioSource component
+
+        // Audio setup
         audioSource = GetComponent<AudioSource>();
         if (audioSource == null)
         {
             audioSource = gameObject.AddComponent<AudioSource>();
-            audioSource.spatialBlend = 1.0f; // Make it 3D sound
+            audioSource.spatialBlend = 1f;
             audioSource.playOnAwake = false;
         }
-        
+
+        // Freeze Y rotation + position
+        if (rb != null)
+            rb.constraints = RigidbodyConstraints.FreezeRotationX |
+                             RigidbodyConstraints.FreezeRotationZ |
+                             RigidbodyConstraints.FreezePositionY;
+
         currentHealth = maxHealth;
 
         if (player != null)
@@ -64,16 +79,18 @@ public class ZombieAI : MonoBehaviour
         Vector3 direction = player.position - transform.position;
         float distance = direction.magnitude;
 
-        // Check if player is within detection range
+        // Too far? Idle
         if (distance > detectionRange)
         {
-            // Player is too far - stay still
             animator.SetBool("isWalking", false);
             animator.SetBool("isAttacking", false);
+            animator.SetBool("isFar", true);
             return;
         }
+        else
+            animator.SetBool("isFar", false);
 
-        // Rotate zombie toward player
+        // Rotate toward player
         Vector3 lookDir = new Vector3(direction.x, 0, direction.z);
         if (lookDir != Vector3.zero)
             transform.rotation = Quaternion.Slerp(transform.rotation,
@@ -82,82 +99,61 @@ public class ZombieAI : MonoBehaviour
 
         if (distance > attackDistance)
         {
-            // Walk toward player
+            // Move toward player
             transform.position += direction.normalized * moveSpeed * Time.deltaTime;
             animator.SetBool("isWalking", true);
             animator.SetBool("isAttacking", false);
-            
         }
         else
         {
-            // Attack player
+            // Attack
             animator.SetBool("isWalking", false);
             animator.SetBool("isAttacking", true);
 
-           
-
             if (Time.time - lastAttackTime > attackCooldown)
             {
-                if (playerHealth != null)
-                    playerHealth.TakeDamage(damage);
-
-                // Play attack sound
-                if (attackSound != null && audioSource != null)
-                {
-                    audioSource.PlayOneShot(attackSound);
-                }
-
+                playerHealth?.TakeDamage(damage);
+                if (attackSound != null) audioSource.PlayOneShot(attackSound);
                 lastAttackTime = Time.time;
             }
         }
 
-        // Near player sound reset
-        if (distance > distanceToPlayerSound)
+        // Play near player sound once
+        if (distance <= distanceToPlayerSound && !hasPlayedNearSound && nearPlayerSound != null)
         {
-            // Reset sound flag when player moves away
+            audioSource.PlayOneShot(nearPlayerSound);
+            hasPlayedNearSound = true;
+        }
+        else if (distance > distanceToPlayerSound)
             hasPlayedNearSound = false;
-        }
-        else
-        {
-             // Play near player sound once when entering range
-            if (!hasPlayedNearSound && nearPlayerSound != null && audioSource != null)
-            {
-                audioSource.PlayOneShot(nearPlayerSound);
-                hasPlayedNearSound = true;
-            }
-        }
     }
 
-    // Call this when the zombie gets hit by a bullet
     public void TakeDamage(int amount)
     {
         if (isDead) return;
-
         currentHealth -= amount;
-
-        if (currentHealth <= 0)
-            Die();
+        if (currentHealth <= 0) Die();
     }
 
     void Die()
     {
-        rb.isKinematic = true;
         isDead = true;
-        
-        // Play death sound once
-        if (deathSound != null && audioSource != null)
+        if (rb != null)
         {
-            audioSource.PlayOneShot(deathSound);
+            rb.isKinematic = true;
+            rb.constraints = RigidbodyConstraints.None;
         }
-        
+
+        if (deathSound != null) audioSource.PlayOneShot(deathSound);
+
         capsule.direction = 2;
         capsule.center = new Vector3(0f, -0.15f, 0.05f);
-        animator.SetBool("isDead", true); // Make sure to create this bool in Animator
+        animator.SetBool("isDead", true);
         animator.SetBool("isWalking", false);
         animator.SetBool("isAttacking", false);
-        FindObjectOfType<LevelManager>().ZombieKilled();
-        // Destroy zombie after 2 seconds so death animation can play
-        //Destroy(gameObject, 2f);
+
+        FindObjectOfType<LevelManager>()?.ZombieKilled();
+
+        Destroy(gameObject, 5f);
     }
 }
-

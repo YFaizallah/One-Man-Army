@@ -18,6 +18,7 @@ public class PlayerHealth : MonoBehaviour
 
         if (currentHealth <= 0)
         {
+            currentHealth = 0;
             Die();
         }
     }
@@ -28,5 +29,9 @@ public class PlayerHealth : MonoBehaviour
         FindObjectOfType<LevelManager>().PlayerDied();
         // You can show fail UI here
         //SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+    }
+    void OnEnable()
+    {
+        currentHealth = maxHealth;
     }
 }
