@@ -31,12 +31,6 @@ public class MenuManager : MonoBehaviour
     public void PlayGame()
     {
         // Replace "GameScene" with the exact name of your scene
-        SceneManager.LoadScene("LevelViewer");
-    }
-
-    public void redirectLevelOne()
-    {
-        // Replace "GameScene" with the exact name of your scene
         SceneManager.LoadScene("LevelOne");
     }
 
