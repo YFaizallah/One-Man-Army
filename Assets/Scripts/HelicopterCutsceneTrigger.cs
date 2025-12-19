@@ -4,6 +4,7 @@ using Cinemachine;
 using System.Collections.Generic;
 using InfimaGames.LowPolyShooterPack.Interface;
 using InfimaGames.LowPolyShooterPack;
+using UnityEngine.InputSystem;
 
 public class HelicopterCutsceneTrigger : MonoBehaviour
 {
@@ -15,6 +16,7 @@ public class HelicopterCutsceneTrigger : MonoBehaviour
     bool triggered;
     private List<Element> uiElements = new List<Element>();
     private CharacterBehaviour playerCharacter;
+    private PlayerInput playerInput;
 
     private void OnTriggerEnter(Collider other)
     {
@@ -22,9 +24,17 @@ public class HelicopterCutsceneTrigger : MonoBehaviour
         if (other.gameObject != player) return;
 
         triggered = true;
-
+        // 🔑 FORCE GAME TIME TO RUN
+        Time.timeScale = 1f;
         // Get the player character component
         playerCharacter = player.GetComponent<CharacterBehaviour>();
+        
+        // Disable PlayerInput component (handles all input including mouse clicks)
+        playerInput = player.GetComponent<PlayerInput>();
+        if (playerInput != null)
+        {
+            playerInput.enabled = false;
+        }
         
         // Disable player movement and input
         if (playerCharacter != null)
@@ -36,7 +46,6 @@ public class HelicopterCutsceneTrigger : MonoBehaviour
             }
         }
 
-        // Disable all player UI elements
         Element[] elements = FindObjectsOfType<Element>();
         foreach (Element element in elements)
         {
@@ -44,6 +53,8 @@ public class HelicopterCutsceneTrigger : MonoBehaviour
             element.SetUIEnabled(false);
         }
 
+        // 🔐 UI might pause time internally
+        Time.timeScale = 1f;
         // Activate dialogue UI for cutscene
         if (dialogueUIForCutscene != null)
         {
@@ -57,6 +68,12 @@ public class HelicopterCutsceneTrigger : MonoBehaviour
     public void EndCutscene()
     {
         brain.enabled = false;  // 🎮 FPS camera returns
+        
+        // Re-enable PlayerInput component
+        if (playerInput != null)
+        {
+            playerInput.enabled = true;
+        }
         
         // Re-enable player movement and input
         if (playerCharacter != null)

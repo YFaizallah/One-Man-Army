@@ -11790,6 +11790,82 @@ GameObject:
     type: 3}
   m_PrefabInstance: {fileID: 1779185834}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &57009928
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 57009931}
+  - component: {fileID: 57009930}
+  - component: {fileID: 57009929}
+  m_Layer: 0
+  m_Name: CutsceneSignalReciever
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &57009929
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 57009928}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e52de21a22b6dd44c9cc19f810c65059, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Events:
+    m_Signals:
+    - {fileID: 11400000, guid: de2f06e83d8c872409686fb243310a73, type: 2}
+    m_Events:
+    - m_PersistentCalls:
+        m_Calls:
+        - m_Target: {fileID: 57009930}
+          m_TargetAssemblyTypeName: CutsceneSignalHandler, Assembly-CSharp
+          m_MethodName: OnCutsceneEnd
+          m_Mode: 1
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
+--- !u!114 &57009930
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 57009928}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bf825b77a0a19cd4281852de272a0f99, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  nextSceneName: MainMenu
+--- !u!4 &57009931
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 57009928}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 244.41287, y: 37.084167, z: 20.086866}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &57839546 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 1131900964092884834, guid: 18def28a0ae3af04b92baf54be5868be,
@@ -27865,7 +27941,7 @@ PrefabInstance:
     - target: {fileID: 2748913124992463393, guid: 19eadcf8fbed56b4da77ca94c1b4145f,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: 253.6
+      value: 247.06
       objectReference: {fileID: 0}
     - target: {fileID: 2748913124992463393, guid: 19eadcf8fbed56b4da77ca94c1b4145f,
         type: 3}
@@ -27875,7 +27951,7 @@ PrefabInstance:
     - target: {fileID: 2748913124992463393, guid: 19eadcf8fbed56b4da77ca94c1b4145f,
         type: 3}
       propertyPath: m_LocalPosition.z
-      value: 22.1
+      value: 26.25
       objectReference: {fileID: 0}
     - target: {fileID: 2748913124992463393, guid: 19eadcf8fbed56b4da77ca94c1b4145f,
         type: 3}
@@ -73924,6 +74000,7 @@ MonoBehaviour:
   director: {fileID: 1177074332}
   brain: {fileID: 1615183388}
   player: {fileID: 1593357878}
+  dialogueUIForCutscene: {fileID: 388781499}
 --- !u!320 &1177074332
 PlayableDirector:
   m_ObjectHideFlags: 0
@@ -73965,6 +74042,10 @@ PlayableDirector:
     value: {fileID: 555718141}
   - key: {fileID: -635014114141995276, guid: e37511df962c9134291fba6f83e4ed0e, type: 2}
     value: {fileID: 527340880}
+  - key: {fileID: -5162117558338692671, guid: e37511df962c9134291fba6f83e4ed0e, type: 2}
+    value: {fileID: 388781501}
+  - key: {fileID: 3042143194024009224, guid: e37511df962c9134291fba6f83e4ed0e, type: 2}
+    value: {fileID: 986545721}
   m_ExposedReferences:
     m_References:
     - 30842edcde28c934f9e46374fa5164aa: {fileID: 427144715}
@@ -75030,6 +75111,8 @@ PlayableDirector:
     value: {fileID: 388781501}
   - key: {fileID: 3361115766566472939, guid: e37511df962c9134291fba6f83e4ed0e, type: 2}
     value: {fileID: 388781499}
+  - key: {fileID: 6523893845700376692, guid: e37511df962c9134291fba6f83e4ed0e, type: 2}
+    value: {fileID: 57009929}
   m_ExposedReferences:
     m_References:
     - eff36f452d481b34eb43cb5e696a49ce: {fileID: 427144715}
@@ -82040,7 +82123,7 @@ PrefabInstance:
     - target: {fileID: 4217325204264167624, guid: 85ecc59948776734280294d96850ff6b,
         type: 3}
       propertyPath: m_Events.m_Events.Array.data[5].m_PersistentCalls.m_Calls.Array.data[1].m_Arguments.m_StringArgument
-      value: We only me
+      value: Why only me
       objectReference: {fileID: 0}
     - target: {fileID: 4217325204264167624, guid: 85ecc59948776734280294d96850ff6b,
         type: 3}
@@ -139566,3 +139649,4 @@ SceneRoots:
   - {fileID: 1200565527}
   - {fileID: 625920930}
   - {fileID: 1331143246}
+  - {fileID: 57009931}
