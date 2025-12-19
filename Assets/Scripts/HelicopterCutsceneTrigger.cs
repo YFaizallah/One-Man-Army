@@ -8,55 +8,35 @@ using UnityEngine.InputSystem;
 
 public class HelicopterCutsceneTrigger : MonoBehaviour
 {
-    [Header("Cutscene References")]
     public PlayableDirector director;
     public CinemachineBrain brain;
     public GameObject player;
     public GameObject dialogueUIForCutscene;
 
-    private bool triggered = false;
-    private bool cutsceneRunning = false;
-
+    bool triggered;
     private List<Element> uiElements = new List<Element>();
     private CharacterBehaviour playerCharacter;
     private PlayerInput playerInput;
 
-    // --------------------------------------------------
-    // FORCE TIME SCALE WHILE CUTSCENE IS RUNNING
-    // --------------------------------------------------
-    private void Update()
-    {
-        if (cutsceneRunning && Time.timeScale != 1f)
-        {
-            Time.timeScale = 1f;
-        }
-    }
-
-    // --------------------------------------------------
-    // TRIGGER CUTSCENE
-    // --------------------------------------------------
     private void OnTriggerEnter(Collider other)
     {
         if (triggered) return;
         if (other.gameObject != player) return;
 
         triggered = true;
-        cutsceneRunning = true;
-
-        // 🔑 Ensure Timeline time always runs
+        // 🔑 FORCE GAME TIME TO RUN
         Time.timeScale = 1f;
-
-        // Cache player components
+        // Get the player character component
         playerCharacter = player.GetComponent<CharacterBehaviour>();
+        
+        // Disable PlayerInput component (handles all input including mouse clicks)
         playerInput = player.GetComponent<PlayerInput>();
-
-        // Disable Player Input (mouse, keyboard, actions)
         if (playerInput != null)
         {
             playerInput.enabled = false;
         }
-
-        // Disable player movement logic
+        
+        // Disable player movement and input
         if (playerCharacter != null)
         {
             MonoBehaviour characterScript = playerCharacter as MonoBehaviour;
@@ -66,7 +46,6 @@ public class HelicopterCutsceneTrigger : MonoBehaviour
             }
         }
 
-        // Disable all Infima UI elements (may internally pause time)
         Element[] elements = FindObjectsOfType<Element>();
         foreach (Element element in elements)
         {
@@ -74,51 +53,29 @@ public class HelicopterCutsceneTrigger : MonoBehaviour
             element.SetUIEnabled(false);
         }
 
-        // 🔐 Infima UI may pause time AFTER disabling — force again
+        // 🔐 UI might pause time internally
         Time.timeScale = 1f;
-
-        // Enable dialogue UI
+        // Activate dialogue UI for cutscene
         if (dialogueUIForCutscene != null)
         {
             dialogueUIForCutscene.SetActive(true);
         }
 
-        // Enable Cinemachine only for cutscene
-        if (brain != null)
-        {
-            brain.enabled = true;
-        }
-
-        // Play Timeline
-        if (director != null)
-        {
-            director.Play();
-        }
+        brain.enabled = true;   // 🎬 Cinemachine ON
+        director.Play();
     }
 
-    // --------------------------------------------------
-    // END CUTSCENE (CALL FROM TIMELINE SIGNAL)
-    // --------------------------------------------------
     public void EndCutscene()
     {
-        cutsceneRunning = false;
-
-        // Restore time (safety)
-        Time.timeScale = 1f;
-
-        // Disable Cinemachine
-        if (brain != null)
-        {
-            brain.enabled = false;
-        }
-
-        // Re-enable Player Input
+        brain.enabled = false;  // 🎮 FPS camera returns
+        
+        // Re-enable PlayerInput component
         if (playerInput != null)
         {
             playerInput.enabled = true;
         }
-
-        // Re-enable player movement
+        
+        // Re-enable player movement and input
         if (playerCharacter != null)
         {
             MonoBehaviour characterScript = playerCharacter as MonoBehaviour;
@@ -127,8 +84,8 @@ public class HelicopterCutsceneTrigger : MonoBehaviour
                 characterScript.enabled = true;
             }
         }
-
-        // Re-enable UI
+        
+        // Re-enable all player UI elements
         foreach (Element element in uiElements)
         {
             if (element != null)
@@ -137,8 +94,8 @@ public class HelicopterCutsceneTrigger : MonoBehaviour
             }
         }
         uiElements.Clear();
-
-        // Hide dialogue UI
+        
+        // Deactivate dialogue UI for cutscene
         if (dialogueUIForCutscene != null)
         {
             dialogueUIForCutscene.SetActive(false);
