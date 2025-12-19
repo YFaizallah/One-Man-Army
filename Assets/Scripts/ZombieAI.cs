@@ -1,5 +1,10 @@
+
 using UnityEngine;
 using UnityEngine.AI;
+using Unity.Services.Analytics;
+using System.Collections.Generic;
+using UnityEngine.SceneManagement;
+
 
 public class ZombieAI : MonoBehaviour
 {
@@ -47,6 +52,15 @@ public class ZombieAI : MonoBehaviour
 
     void Start()
     {
+        AnalyticsService.Instance.RecordEvent(
+            new CustomEvent("zombie_respawned")
+            {
+                { "zombie_name", gameObject.name },
+                { "scene", UnityEngine.SceneManagement.SceneManager.GetActiveScene().name },
+                { "time", Time.timeSinceLevelLoad }
+            }
+        );
+
         animator = GetComponent<Animator>();
         rb = GetComponent<Rigidbody>();
         capsule = GetComponent<CapsuleCollider>();
@@ -137,7 +151,21 @@ public class ZombieAI : MonoBehaviour
 
     void Die()
     {
+        
+        if (isDead) return;
         isDead = true;
+
+        // 📊 Analytics event
+        AnalyticsService.Instance.RecordEvent(
+            new CustomEvent("zombie_killed")
+            {
+                { "zombie_name", gameObject.name },
+                {"scene", UnityEngine.SceneManagement.SceneManager.GetActiveScene().name },
+                { "time", Time.timeSinceLevelLoad }
+            }
+        );
+
+
         if (rb != null)
         {
             rb.isKinematic = true;
@@ -148,12 +176,13 @@ public class ZombieAI : MonoBehaviour
 
         capsule.direction = 2;
         capsule.center = new Vector3(0f, -0.15f, 0.05f);
+
         animator.SetBool("isDead", true);
         animator.SetBool("isWalking", false);
         animator.SetBool("isAttacking", false);
 
         FindObjectOfType<LevelManager>()?.ZombieKilled();
-
         Destroy(gameObject, 5f);
     }
+
 }
