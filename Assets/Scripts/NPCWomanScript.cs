@@ -230,6 +230,36 @@ public class NPCWomanScript : MonoBehaviour
         DialogueUI.instance.StartDialogue(dialogueLines, gameObject);
     }
 
+    //public void EndDialogue()
+    //{
+    //    dialogueStarted = false;
+    //    hasTalkedOnce = true;
+    //    isFollowing = true;
+
+    //    Debug.Log("NPC Woman: Ending dialogue, transitioning from terrified to idle");
+
+    //    if (animator != null)
+    //    {
+    //        // Explicitly end terrified state
+    //        animator.SetBool("hasTalked", true);
+
+    //        // Force idle animation to start
+    //        animator.SetBool("isIdle", true);
+    //        animator.SetBool("isWalking", false);
+    //        animator.SetBool("isRunning", false);
+    //    }
+
+    //    // Unfreeze the NPC so she can move and rotate
+    //    if (rb != null)
+    //    {
+    //        rb.constraints = RigidbodyConstraints.FreezeRotationX | RigidbodyConstraints.FreezeRotationZ;
+    //    }
+
+    //    // Initialize position tracking
+    //    lastPosition = transform.position;
+    //    movementCheckTimer = 0f;
+    //}
+
     public void EndDialogue()
     {
         dialogueStarted = false;
@@ -240,25 +270,27 @@ public class NPCWomanScript : MonoBehaviour
 
         if (animator != null)
         {
-            // Explicitly end terrified state
             animator.SetBool("hasTalked", true);
-            
-            // Force idle animation to start
             animator.SetBool("isIdle", true);
             animator.SetBool("isWalking", false);
             animator.SetBool("isRunning", false);
         }
 
-        // Unfreeze the NPC so she can move and rotate
         if (rb != null)
         {
             rb.constraints = RigidbodyConstraints.FreezeRotationX | RigidbodyConstraints.FreezeRotationZ;
         }
 
-        // Initialize position tracking
         lastPosition = transform.position;
         movementCheckTimer = 0f;
+
+        //  THIS IS THE MISSING PIECE
+        if (LevelManager.instance != null)
+        {
+            LevelManager.instance.PlayerTalkedToNPC();
+        }
     }
+
 
     void FollowPlayer(float dist)
     {

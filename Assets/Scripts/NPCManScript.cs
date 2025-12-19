@@ -8,7 +8,7 @@ public class NPCManScript : MonoBehaviour
 
     [Header("Dialogue")]
     public DialogueLine[] dialogueLines; // <-- now you can assign both text & image
-    //public LevelManager levelManager;
+    public LevelManager levelManager;
 
     [Header("Interaction Settings")]
     public float detectionRange = 8f;
@@ -86,7 +86,9 @@ public class NPCManScript : MonoBehaviour
             Debug.Log("Arrow hidden after dialogue.");
         }
         // Pass dialogue lines with optional images
-        DialogueUI.instance.StartDialogue(dialogueLines);
+        //DialogueUI.instance.StartDialogue(dialogueLines);
+        DialogueUI.instance.StartDialogue(dialogueLines, gameObject);
+
     }
 
     public void EndDialogue()
@@ -98,6 +100,12 @@ public class NPCManScript : MonoBehaviour
         {
             animator.SetBool("NPCTalked", false);
             animator.SetBool("PlayerNear", false);
+        }
+
+        if (LevelManager.instance != null)
+        {
+            Debug.Log("test1");
+            LevelManager.instance.PlayerTalkedToNPC();
         }
     }
 
