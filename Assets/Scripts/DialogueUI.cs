@@ -181,11 +181,15 @@ public class DialogueUI : MonoBehaviour
 {
     public static DialogueUI instance;
 
-    [Header("UI")]
-    public GameObject dialoguePanel;
-    public TextMeshProUGUI dialogueText;
-    public Image dialogueImage;               // UI Image for NPC portrait or dialogue image
-    public GameObject pressEIndicator;        // "Press E to talk"
+    [Header("UI - Dialogue Assets")]
+    public GameObject dialoguePanel;          // "Dialogue assets" parent object
+    public GameObject background;             // Background panel
+    public TextMeshProUGUI nameText;          // Name text
+    public TextMeshProUGUI messageText;       // Message text
+    public GameObject continueButton;         // Continue button/indicator
+    
+    [Header("UI - Other")]
+    public GameObject interactionPopup;       // InteractionPopup - "Press E to talk"
     public GameObject playerUICanvas;         // Assign your Player UI Canvas here
 
     private DialogueLine[] sentences;
@@ -199,12 +203,9 @@ public class DialogueUI : MonoBehaviour
         instance = this;
 
         dialoguePanel.SetActive(false);
-        dialogueText.gameObject.SetActive(false);
-
-        if (dialogueImage != null)
-            dialogueImage.gameObject.SetActive(false);
-
-        pressEIndicator.SetActive(false);
+        
+        if (interactionPopup != null)
+            interactionPopup.SetActive(false);
     }
 
     void Update()
@@ -223,7 +224,8 @@ public class DialogueUI : MonoBehaviour
 
     public void ShowPressE(bool show)
     {
-        pressEIndicator.SetActive(show && !activeDialogue);
+        if (interactionPopup != null)
+            interactionPopup.SetActive(show && !activeDialogue);
     }
 
     public void StartDialogue(DialogueLine[] lines)
@@ -237,12 +239,14 @@ public class DialogueUI : MonoBehaviour
 
         sentences = lines;
         currentNPC = npc;
-        index = -1; // Start at -1 so first NextSentence() call shows index 0
+        index = 0; // Start at index 0
         activeDialogue = true;
-        canAdvance = false; // Reset the flag when dialogue starts
+        canAdvance = false; // Prevents advancing on the same frame
 
         dialoguePanel.SetActive(true);
-        dialogueText.gameObject.SetActive(true);
+        
+        if (interactionPopup != null)
+            interactionPopup.SetActive(false);
 
         if (playerUICanvas != null)
             playerUICanvas.SetActive(false);
@@ -251,7 +255,7 @@ public class DialogueUI : MonoBehaviour
         FreezeZombies(true);
         
         // Show the first sentence immediately
-        NextSentence();
+        ShowCurrentSentence();
     }
 
     public void NextSentence()
@@ -269,16 +273,27 @@ public class DialogueUI : MonoBehaviour
 
     private void ShowCurrentSentence()
     {
-        dialogueText.text = sentences[index].text;
-
-        if (dialogueImage != null && sentences[index].image != null)
+        // Update the name text (character speaking)
+        if (nameText != null && !string.IsNullOrEmpty(sentences[index].characterName))
         {
-            dialogueImage.sprite = sentences[index].image;
-            dialogueImage.gameObject.SetActive(true);
+            nameText.text = sentences[index].characterName;
+            nameText.gameObject.SetActive(true);
         }
-        else if (dialogueImage != null)
+        else if (nameText != null)
         {
-            dialogueImage.gameObject.SetActive(false);
+            nameText.gameObject.SetActive(false);
+        }
+
+        // Update the message text (dialogue content)
+        if (messageText != null)
+        {
+            messageText.text = sentences[index].text;
+        }
+        
+        // Show continue indicator
+        if (continueButton != null)
+        {
+            continueButton.SetActive(true);
         }
     }
 
@@ -287,12 +302,6 @@ public class DialogueUI : MonoBehaviour
         activeDialogue = false;
         canAdvance = false; // Reset flag
         dialoguePanel.SetActive(false);
-        dialogueText.gameObject.SetActive(false);
-
-        if (dialogueImage != null)
-            dialogueImage.gameObject.SetActive(false);
-
-        pressEIndicator.SetActive(false);
 
         if (playerUICanvas != null)
             playerUICanvas.SetActive(true);
