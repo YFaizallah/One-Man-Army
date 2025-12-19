@@ -30,6 +30,11 @@ namespace InfimaGames.LowPolyShooterPack.Interface
         /// </summary>
         protected WeaponBehaviour equippedWeapon;
         
+        /// <summary>
+        /// Whether this UI element is currently enabled.
+        /// </summary>
+        private bool isUIEnabled = true;
+        
         #endregion
 
         #region UNITY
@@ -53,6 +58,10 @@ namespace InfimaGames.LowPolyShooterPack.Interface
         /// </summary>
         private void Update()
         {
+            //Ignore if UI is disabled.
+            if (!isUIEnabled)
+                return;
+            
             //Ignore if we don't have an Inventory.
             if (Equals(playerCharacterInventory, null))
                 return;
@@ -67,6 +76,15 @@ namespace InfimaGames.LowPolyShooterPack.Interface
         #endregion
 
         #region METHODS
+        
+        /// <summary>
+        /// Enable or disable this UI element.
+        /// </summary>
+        public void SetUIEnabled(bool enabled)
+        {
+            isUIEnabled = enabled;
+            gameObject.SetActive(enabled);
+        }
 
         /// <summary>
         /// Tick.
