@@ -27951,7 +27951,7 @@ PrefabInstance:
     - target: {fileID: 2748913124992463393, guid: 19eadcf8fbed56b4da77ca94c1b4145f,
         type: 3}
       propertyPath: m_LocalPosition.z
-      value: 26.25
+      value: 26.5
       objectReference: {fileID: 0}
     - target: {fileID: 2748913124992463393, guid: 19eadcf8fbed56b4da77ca94c1b4145f,
         type: 3}
@@ -74046,6 +74046,8 @@ PlayableDirector:
     value: {fileID: 388781501}
   - key: {fileID: 3042143194024009224, guid: e37511df962c9134291fba6f83e4ed0e, type: 2}
     value: {fileID: 986545721}
+  - key: {fileID: 6523893845700376692, guid: e37511df962c9134291fba6f83e4ed0e, type: 2}
+    value: {fileID: 57009929}
   m_ExposedReferences:
     m_References:
     - 30842edcde28c934f9e46374fa5164aa: {fileID: 427144715}
