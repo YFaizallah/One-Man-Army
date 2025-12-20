@@ -54,13 +54,24 @@ public class UIMenuController : MonoBehaviour
     public void BackToTitle()
     {
         Time.timeScale = 1f;
+        ResetGameState();
         UnityEngine.SceneManagement.SceneManager.LoadScene("MainMenu");
     }
 
     public void RestartLevel()
     {
         Time.timeScale = 1f;
+        ResetGameState();
         UnityEngine.SceneManagement.SceneManager.LoadScene(
             UnityEngine.SceneManagement.SceneManager.GetActiveScene().name);
+    }
+
+    private void ResetGameState()
+    {
+        StoryProgress.Reset();
+        if (LevelManager.instance != null)
+        {
+            LevelManager.instance.ResetState();
+        }
     }
 }

@@ -301,6 +301,26 @@ public class LevelManager : MonoBehaviour
             Destroy(gameObject);
     }
 
+    void OnDestroy()
+    {
+        if (instance == this)
+        {
+            instance = null;
+        }
+    }
+
+    public void ResetState()
+    {
+        zombiesKilled = 0;
+        gameEnded = false;
+        arrowSpawned = false;
+        currentObjective = ObjectiveState.KillZombies;
+        arrowActive = false;
+
+        if (arrowPrefab != null)
+            arrowPrefab.SetActive(false);
+    }
+
     void Start()
     {
         UnityServices.InitializeAsync();

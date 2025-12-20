@@ -199,24 +199,37 @@ public class GameEndManager : MonoBehaviour
     public void RestartLevel()
     {
         Time.timeScale = 1f;
+        ResetGameState();
         SceneManager.LoadScene(SceneManager.GetActiveScene().name);
     }
 
     public void BackToTitle()
     {
         Time.timeScale = 1f;
+        ResetGameState();
         SceneManager.LoadScene("MainMenu");
+    }
+
+    private void ResetGameState()
+    {
+        StoryProgress.Reset();
+        if (LevelManager.instance != null)
+        {
+            LevelManager.instance.ResetState();
+        }
     }
 
     public void BackToLevelScreen()
     {
         Time.timeScale = 1f;
+        ResetGameState();
         SceneManager.LoadScene("LevelViewer");
     }
 
     public void NextLevel2()
     {
         Time.timeScale = 1f;
+        ResetGameState();
         SceneManager.LoadScene("LevelTwo");
     }
 }
