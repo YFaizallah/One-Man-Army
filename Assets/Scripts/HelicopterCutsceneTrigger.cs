@@ -60,6 +60,9 @@ public class HelicopterCutsceneTrigger : MonoBehaviour
         {
             dialogueUIForCutscene.SetActive(true);
         }
+// 🔐 UI might pause time internally
+        Time.timeScale = 1f;
+        Debug.Log("TimeScale = " + Time.timeScale);
 
         director.Play();
     }
