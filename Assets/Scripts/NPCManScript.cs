@@ -7,8 +7,7 @@ public class NPCManScript : MonoBehaviour
     private Animator animator;
 
     [Header("Dialogue")]
-    public DialogueLine[] dialogueLines; // <-- now you can assign both text & image
-    //public LevelManager levelManager;
+    public DialogueLine[] dialogueLines;
 
     [Header("Interaction Settings")]
     public float detectionRange = 8f;
@@ -18,11 +17,6 @@ public class NPCManScript : MonoBehaviour
     private bool playerInRange = false;
     private bool dialogueStarted = false;
     private bool hasTalkedOnce = false;
-
-    
-
-
-
 
     void Start()
     {
@@ -47,35 +41,31 @@ public class NPCManScript : MonoBehaviour
             if (!playerInRange)
             {
                 playerInRange = true;
+
                 if (animator != null && !hasTalkedOnce)
                     animator.SetBool("PlayerNear", true);
-            }
-            
-            // Only show popup if not talking and haven't talked yet
-            if (!dialogueStarted && !hasTalkedOnce && DialogueUI.instance != null)
-            {
-                DialogueUI.instance.ShowPressE(true);
+
+                if (!dialogueStarted)
+                    DialogueUI.instance.ShowPressE(true);
             }
 
             if (!hasTalkedOnce || dialogueStarted)
                 LookAtPlayer();
 
-            // Check for E key press - only allow if dialogue not active and hasn't talked yet
-            if (Input.GetKeyDown(interactKey) && !dialogueStarted && !hasTalkedOnce && 
-                DialogueUI.instance != null && !DialogueUI.instance.IsActive())
-            {
+            if (Input.GetKeyDown(interactKey) && !dialogueStarted)
                 StartDialogue();
-            }
         }
         else
         {
             if (playerInRange)
             {
                 playerInRange = false;
+
                 if (animator != null && !hasTalkedOnce)
                     animator.SetBool("PlayerNear", false);
-                if (DialogueUI.instance != null)
-                    DialogueUI.instance.ShowPressE(false);
+
+                DialogueUI.instance.ShowPressE(false);
+                dialogueStarted = false;
             }
         }
     }
@@ -83,26 +73,23 @@ public class NPCManScript : MonoBehaviour
     void StartDialogue()
     {
         dialogueStarted = true;
-        
-        // Hide the interaction popup when dialogue starts
-        if (DialogueUI.instance != null)
-            DialogueUI.instance.ShowPressE(false);
+        DialogueUI.instance.ShowPressE(false);
 
         if (animator != null)
             animator.SetBool("NPCTalked", true);
-            
+
+        // Hide arrow immediately
         if (LevelManager.instance != null && LevelManager.instance.arrowPrefab != null)
         {
             LevelManager.instance.arrowPrefab.SetActive(false);
             LevelManager.instance.arrowActive = false;
-            Debug.Log("Arrow hidden after dialogue.");
         }
-        
-        // Start the dialogue with proper NPC reference
-        if (DialogueUI.instance != null)
-            DialogueUI.instance.StartDialogue(dialogueLines, gameObject);
+
+        // IMPORTANT: pass THIS NPC to DialogueUI
+        DialogueUI.instance.StartDialogue(dialogueLines, gameObject);
     }
 
+    // CALLED BY DialogueUI
     public void EndDialogue()
     {
         dialogueStarted = false;
@@ -113,6 +100,10 @@ public class NPCManScript : MonoBehaviour
             animator.SetBool("NPCTalked", false);
             animator.SetBool("PlayerNear", false);
         }
+
+        // Notify LevelManager
+        if (LevelManager.instance != null)
+            LevelManager.instance.PlayerTalkedToNPC();
     }
 
     void LookAtPlayer()
@@ -122,7 +113,7 @@ public class NPCManScript : MonoBehaviour
         if (direction.magnitude == 0) return;
 
         Quaternion lookRotation = Quaternion.LookRotation(direction);
-        transform.rotation = Quaternion.Slerp(transform.rotation, lookRotation, Time.deltaTime * rotationSpeed);
+        transform.rotation =
+            Quaternion.Slerp(transform.rotation, lookRotation, Time.deltaTime * rotationSpeed);
     }
-
 }

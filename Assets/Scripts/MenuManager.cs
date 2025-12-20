@@ -37,7 +37,21 @@ public class MenuManager : MonoBehaviour
     public void redirectLevelOne()
     {
         // Replace "GameScene" with the exact name of your scene
+        Time.timeScale = 1f;
         SceneManager.LoadScene("LevelOne");
+    }
+
+
+    public void RestartLevel()
+    {
+        Time.timeScale = 1f;
+        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+    }
+
+    public void redirectMainMenu()
+    {
+        // Replace "GameScene" with the exact name of your scene
+        SceneManager.LoadScene("MainMenu");
     }
 
     // Button wired to Quit
