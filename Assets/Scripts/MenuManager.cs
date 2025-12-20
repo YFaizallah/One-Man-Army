@@ -22,6 +22,10 @@ public class MenuManager : MonoBehaviour
 
     void Start()
     {
+        // Unlock and show the cursor
+        Cursor.lockState = CursorLockMode.None;
+        Cursor.visible = true;
+
         if (menuPanel != null) menuPanel.SetActive(true);
         if (optionsPanel != null) optionsPanel.SetActive(false);
 
