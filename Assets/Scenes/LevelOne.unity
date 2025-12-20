@@ -51194,10 +51194,31 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   player: {fileID: 1593357888}
   dialogueLines:
-  - characterName: Side
-    text: HI my  name is slime shady
-  - characterName: MC
-    text: what is your name
+  - characterName: Man
+    text: Hello here
+  - characterName: John
+    text: 
+  - characterName: Daniel
+    text: 'Okay '
+  - characterName: Daniel
+    text: My name is Daniel, I don't know what happened suddenly everyone started
+      eating eachother
+  - characterName: Daniel
+    text: My name is Daniel, I don't know what happened suddenly everyone started
+      eating eachother
+  - characterName: John
+    text: Did you see a girl with her mother, having black hair and her mother is
+      blonde.
+  - characterName: Daniel
+    text: No, I did not see a girl and her mother, but I saw a girl running.
+  - characterName: John
+    text: Where?
+  - characterName: Daniel
+    text: She was heading to the city park
+  - characterName: Daniel
+    text: Don't you know when help will come?
+  - characterName: Daniel
+    text: Soon
   detectionRange: 5
   interactKey: 101
   rotationSpeed: 5
@@ -82070,7 +82091,7 @@ PrefabInstance:
     - target: {fileID: 4217325204264167624, guid: 85ecc59948776734280294d96850ff6b,
         type: 3}
       propertyPath: m_Events.m_Events.Array.data[0].m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_StringArgument
-      value: MC
+      value: John
       objectReference: {fileID: 0}
     - target: {fileID: 4217325204264167624, guid: 85ecc59948776734280294d96850ff6b,
         type: 3}
@@ -82080,7 +82101,7 @@ PrefabInstance:
     - target: {fileID: 4217325204264167624, guid: 85ecc59948776734280294d96850ff6b,
         type: 3}
       propertyPath: m_Events.m_Events.Array.data[1].m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_StringArgument
-      value: MC
+      value: John
       objectReference: {fileID: 0}
     - target: {fileID: 4217325204264167624, guid: 85ecc59948776734280294d96850ff6b,
         type: 3}
@@ -82090,7 +82111,7 @@ PrefabInstance:
     - target: {fileID: 4217325204264167624, guid: 85ecc59948776734280294d96850ff6b,
         type: 3}
       propertyPath: m_Events.m_Events.Array.data[2].m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_StringArgument
-      value: Girl
+      value: Sarah
       objectReference: {fileID: 0}
     - target: {fileID: 4217325204264167624, guid: 85ecc59948776734280294d96850ff6b,
         type: 3}
@@ -82100,17 +82121,17 @@ PrefabInstance:
     - target: {fileID: 4217325204264167624, guid: 85ecc59948776734280294d96850ff6b,
         type: 3}
       propertyPath: m_Events.m_Events.Array.data[3].m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_StringArgument
-      value: Girl
+      value: Sarah
       objectReference: {fileID: 0}
     - target: {fileID: 4217325204264167624, guid: 85ecc59948776734280294d96850ff6b,
         type: 3}
       propertyPath: m_Events.m_Events.Array.data[3].m_PersistentCalls.m_Calls.Array.data[1].m_Arguments.m_StringArgument
-      value: They wil die, I saw healthy people
+      value: They wil die, I saw healthy people. You lied to me
       objectReference: {fileID: 0}
     - target: {fileID: 4217325204264167624, guid: 85ecc59948776734280294d96850ff6b,
         type: 3}
       propertyPath: m_Events.m_Events.Array.data[4].m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_StringArgument
-      value: MC
+      value: John
       objectReference: {fileID: 0}
     - target: {fileID: 4217325204264167624, guid: 85ecc59948776734280294d96850ff6b,
         type: 3}
@@ -82120,7 +82141,7 @@ PrefabInstance:
     - target: {fileID: 4217325204264167624, guid: 85ecc59948776734280294d96850ff6b,
         type: 3}
       propertyPath: m_Events.m_Events.Array.data[5].m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_StringArgument
-      value: Girl
+      value: John
       objectReference: {fileID: 0}
     - target: {fileID: 4217325204264167624, guid: 85ecc59948776734280294d96850ff6b,
         type: 3}
@@ -82130,12 +82151,12 @@ PrefabInstance:
     - target: {fileID: 4217325204264167624, guid: 85ecc59948776734280294d96850ff6b,
         type: 3}
       propertyPath: m_Events.m_Events.Array.data[6].m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_StringArgument
-      value: MC
+      value: John
       objectReference: {fileID: 0}
     - target: {fileID: 4217325204264167624, guid: 85ecc59948776734280294d96850ff6b,
         type: 3}
       propertyPath: m_Events.m_Events.Array.data[6].m_PersistentCalls.m_Calls.Array.data[1].m_Arguments.m_StringArgument
-      value: Because of your father, world is unfair.
+      value: Because of your father, world is not fair.
       objectReference: {fileID: 0}
     - target: {fileID: 4217325204264167624, guid: 85ecc59948776734280294d96850ff6b,
         type: 3}
@@ -108514,9 +108535,35 @@ MonoBehaviour:
   player: {fileID: 1593357888}
   dialogueLines:
   - characterName: Girl
-    text: Hello I am your Target
-  - characterName: MC
-    text: Follow Me
+    text: Sir
+  - characterName: John
+    text: What's your name?
+  - characterName: Sarah
+    text: Sarah
+  - characterName: John
+    text: I came to save you, where is you mother?
+  - characterName: Sarah
+    text: Mother
+  - characterName: Sarah
+    text: She died trying to protect me from the the people that were running after
+      us
+  - characterName: Sarah
+    text: She died for me to live
+  - characterName: John
+    text: I'm
+  - characterName: John
+    text: I'm sorry
+  - characterName: John
+    text: Let's get going
+  - characterName: John
+    text: We are going to the city park nearby there is a helicopter waiting for
+      us.
+  - characterName: Sarah
+    text: What will happen to the rest of the people?
+  - characterName: John
+    text: Help will come for them later, follow me!!
+  - characterName: 'Sarah '
+    text: Okay
   detectionRange: 8
   interactKey: 101
   followSpeed: 2.5
