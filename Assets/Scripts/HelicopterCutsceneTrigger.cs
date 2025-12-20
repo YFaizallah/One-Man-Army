@@ -24,6 +24,8 @@ public class HelicopterCutsceneTrigger : MonoBehaviour
         if (other.gameObject != player) return;
 
         triggered = true;
+        // Disable ESC button during cutscene
+        PauseManager.isInCutscene = true;
         // 🔑 FORCE GAME TIME TO RUN
         Time.timeScale = 1f;
         // Get the player character component
@@ -67,6 +69,9 @@ public class HelicopterCutsceneTrigger : MonoBehaviour
 
     public void EndCutscene()
     {
+        // Re-enable ESC button
+        PauseManager.isInCutscene = false;
+        
         brain.enabled = false;  // 🎮 FPS camera returns
         
         // Re-enable PlayerInput component

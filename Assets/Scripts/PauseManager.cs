@@ -3,6 +3,8 @@ using UnityEngine;
 
 public class PauseManager : MonoBehaviour
 {
+    public static bool isInCutscene = false; // Flag to disable ESC during cutscenes
+
     [Header("Pause UI")]
     [SerializeField] private GameObject pauseMenu;  // Panel or UI container
 
@@ -34,6 +36,9 @@ public class PauseManager : MonoBehaviour
             if (gameEndManager.winCanvas != null && gameEndManager.winCanvas.activeSelf) return;
             if (gameEndManager.loseCanvas != null && gameEndManager.loseCanvas.activeSelf) return;
         }
+
+        // Don't allow pausing during cutscenes
+        if (isInCutscene) return;
 
         if (Input.GetKeyDown(KeyCode.Escape))
             TogglePause();
