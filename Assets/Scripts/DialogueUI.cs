@@ -191,12 +191,16 @@ public class DialogueUI : MonoBehaviour
     [Header("UI - Other")]
     public GameObject interactionPopup;       // InteractionPopup - "Press E to talk"
     public GameObject playerUICanvas;         // Assign your Player UI Canvas here
+    
+    [Header("Typing Settings")]
+    public float typingSpeed = 0.03f;         // Speed of typing effect
 
     private DialogueLine[] sentences;
     private int index;
     private bool activeDialogue = false;
     private bool canAdvance = false; // Prevents advancing on the same frame dialogue starts
     private GameObject currentNPC; // Track which NPC started the dialogue
+    private Coroutine typingCoroutine; // To manage typing coroutine
 
     void Awake()
     {
@@ -284,13 +288,36 @@ public class DialogueUI : MonoBehaviour
             nameText.gameObject.SetActive(false);
         }
 
-        // Update the message text (dialogue content)
+        // Stop any existing typing coroutine
+        if (typingCoroutine != null)
+        {
+            StopCoroutine(typingCoroutine);
+        }
+
+        // Start typing the message text
         if (messageText != null)
         {
-            messageText.text = sentences[index].text;
+            typingCoroutine = StartCoroutine(TypeMessage(sentences[index].text));
         }
         
-        // Show continue indicator
+        // Show continue indicator (will appear after typing finishes)
+        if (continueButton != null)
+        {
+            continueButton.SetActive(false);
+        }
+    }
+    
+    private System.Collections.IEnumerator TypeMessage(string message)
+    {
+        messageText.text = "";
+        
+        foreach (char c in message)
+        {
+            messageText.text += c;
+            yield return new WaitForSeconds(typingSpeed);
+        }
+        
+        // Show continue button after typing is complete
         if (continueButton != null)
         {
             continueButton.SetActive(true);
@@ -301,6 +328,14 @@ public class DialogueUI : MonoBehaviour
     {
         activeDialogue = false;
         canAdvance = false; // Reset flag
+        
+        // Stop typing coroutine if still running
+        if (typingCoroutine != null)
+        {
+            StopCoroutine(typingCoroutine);
+            typingCoroutine = null;
+        }
+        
         dialoguePanel.SetActive(false);
 
         if (playerUICanvas != null)

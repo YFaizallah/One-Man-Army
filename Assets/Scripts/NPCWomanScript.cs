@@ -248,6 +248,8 @@ public class NPCWomanScript : MonoBehaviour
 
         Debug.Log("NPC Woman: Ending dialogue, transitioning from terrified to idle");
 
+        StoryProgress.talkedToWoman = true; // Update story progress
+
         if (animator != null)
         {
             // Explicitly end terrified state
