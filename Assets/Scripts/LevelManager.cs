@@ -428,11 +428,11 @@ public class LevelManager : MonoBehaviour
                 break;
 
             case ObjectiveState.FindWoman:
-                objectiveText.text = "Find the Vice President's daughter";
+                objectiveText.text = "Find the Minister's daughter";
                 break;
 
             case ObjectiveState.EscortToHelicopter:
-                objectiveText.text = "Escort the Vice President's daughter to the helicopter";
+                objectiveText.text = "Escort the Minister's daughter to the helicopter";
                 break;
         }
     }
