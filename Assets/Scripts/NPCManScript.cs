@@ -7,8 +7,7 @@ public class NPCManScript : MonoBehaviour
     private Animator animator;
 
     [Header("Dialogue")]
-    public DialogueLine[] dialogueLines; // <-- now you can assign both text & image
-    public LevelManager levelManager;
+    public DialogueLine[] dialogueLines;
 
     [Header("Interaction Settings")]
     public float detectionRange = 8f;
@@ -18,11 +17,6 @@ public class NPCManScript : MonoBehaviour
     private bool playerInRange = false;
     private bool dialogueStarted = false;
     private bool hasTalkedOnce = false;
-
-    
-
-
-
 
     void Start()
     {
@@ -47,8 +41,10 @@ public class NPCManScript : MonoBehaviour
             if (!playerInRange)
             {
                 playerInRange = true;
+
                 if (animator != null && !hasTalkedOnce)
                     animator.SetBool("PlayerNear", true);
+
                 if (!dialogueStarted)
                     DialogueUI.instance.ShowPressE(true);
             }
@@ -64,8 +60,10 @@ public class NPCManScript : MonoBehaviour
             if (playerInRange)
             {
                 playerInRange = false;
+
                 if (animator != null && !hasTalkedOnce)
                     animator.SetBool("PlayerNear", false);
+
                 DialogueUI.instance.ShowPressE(false);
                 dialogueStarted = false;
             }
@@ -79,18 +77,18 @@ public class NPCManScript : MonoBehaviour
 
         if (animator != null)
             animator.SetBool("NPCTalked", true);
+
+        // Hide arrow immediately
         if (LevelManager.instance != null && LevelManager.instance.arrowPrefab != null)
         {
             LevelManager.instance.arrowPrefab.SetActive(false);
             LevelManager.instance.arrowActive = false;
-            Debug.Log("Arrow hidden after dialogue.");
         }
-        // Pass dialogue lines with optional images
-        //DialogueUI.instance.StartDialogue(dialogueLines);
-        DialogueUI.instance.StartDialogue(dialogueLines, gameObject);
 
+        DialogueUI.instance.StartDialogue(dialogueLines, gameObject);
     }
 
+    // ?? THIS WAS THE MISSING LINK
     public void EndDialogue()
     {
         dialogueStarted = false;
@@ -102,9 +100,9 @@ public class NPCManScript : MonoBehaviour
             animator.SetBool("PlayerNear", false);
         }
 
+        // ? TELL LEVEL MANAGER THAT MAN WAS TALKED TO
         if (LevelManager.instance != null)
         {
-            Debug.Log("test1");
             LevelManager.instance.PlayerTalkedToNPC();
         }
     }
@@ -116,7 +114,7 @@ public class NPCManScript : MonoBehaviour
         if (direction.magnitude == 0) return;
 
         Quaternion lookRotation = Quaternion.LookRotation(direction);
-        transform.rotation = Quaternion.Slerp(transform.rotation, lookRotation, Time.deltaTime * rotationSpeed);
+        transform.rotation =
+            Quaternion.Slerp(transform.rotation, lookRotation, Time.deltaTime * rotationSpeed);
     }
-
 }
