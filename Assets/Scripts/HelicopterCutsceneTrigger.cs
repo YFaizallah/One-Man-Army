@@ -1,6 +1,5 @@
 using UnityEngine;
 using UnityEngine.Playables;
-using Cinemachine;
 using System.Collections.Generic;
 using InfimaGames.LowPolyShooterPack.Interface;
 using InfimaGames.LowPolyShooterPack;
@@ -9,7 +8,6 @@ using UnityEngine.InputSystem;
 public class HelicopterCutsceneTrigger : MonoBehaviour
 {
     public PlayableDirector director;
-    public CinemachineBrain brain;
     public GameObject player;
     public GameObject dialogueUIForCutscene;
 
@@ -63,7 +61,6 @@ public class HelicopterCutsceneTrigger : MonoBehaviour
             dialogueUIForCutscene.SetActive(true);
         }
 
-        brain.enabled = true;   // 🎬 Cinemachine ON
         director.Play();
     }
 
@@ -72,7 +69,6 @@ public class HelicopterCutsceneTrigger : MonoBehaviour
         // Re-enable ESC button
         PauseManager.isInCutscene = false;
         
-        brain.enabled = false;  // 🎮 FPS camera returns
         
         // Re-enable PlayerInput component
         if (playerInput != null)
