@@ -244,6 +244,9 @@
 using UnityEngine;
 using TMPro;
 using System.Collections;
+using Unity.Services.Core;
+using Unity.Services.Analytics;
+
 
 public class LevelManager : MonoBehaviour
 {
@@ -300,6 +303,13 @@ public class LevelManager : MonoBehaviour
 
     void Start()
     {
+        UnityServices.InitializeAsync();
+        AnalyticsService.Instance.StartDataCollection();
+        if (spawnedArrow != null)
+            spawnedArrow.SetActive(false);
+        if (arrowPrefab != null)
+            arrowPrefab.SetActive(false);
+        // Hide UI initially
         arrowPrefab.SetActive(false);
         losePanel.SetActive(false);
         scriptPanel.SetActive(false);
