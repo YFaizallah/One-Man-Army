@@ -1,7 +1,7 @@
 using UnityEngine;
 using UnityEngine.SceneManagement;
-using UnityEngine.UI;         // for slider (legacy UI)
-using TMPro;                  // only if using TextMeshPro
+using UnityEngine.UI; // Needed for the Fade Image
+using System.Collections; // Needed for IEnumerator
 
 public class MenuManager : MonoBehaviour
 {
@@ -9,17 +9,25 @@ public class MenuManager : MonoBehaviour
     public GameObject menuPanel;
     public GameObject optionsPanel;
 
+    [Header("Fader")]
+    public Image fadePanel; // Drag your Black Panel here
+    public float fadeDuration = 1.0f; // How long the fade takes
+
     [Header("Options")]
-    public Slider volumeSlider;       // UI Slider
-    // public TMP_Text versionText;   // optional TMP usage
+    public Slider volumeSlider;
 
     void Start()
     {
-        // Ensure main menu shows, options hidden
         if (menuPanel != null) menuPanel.SetActive(true);
         if (optionsPanel != null) optionsPanel.SetActive(false);
 
-        // initialize slider from saved prefs
+        // Ensure the fade panel is invisible at start
+        if (fadePanel != null)
+        {
+            fadePanel.gameObject.SetActive(true);
+            fadePanel.canvasRenderer.SetAlpha(0f);
+        }
+
         if (volumeSlider != null)
         {
             volumeSlider.value = PlayerPrefs.GetFloat("masterVolume", 1f);
@@ -27,29 +35,33 @@ public class MenuManager : MonoBehaviour
         }
     }
 
-    // Button wired to Play
+    // UPDATED: This now starts the transition instead of loading instantly
     public void PlayGame()
     {
-        // Replace "GameScene" with the exact name of your scene
-        SceneManager.LoadScene("LevelOne");
+        StartCoroutine(FadeAndLoad());
     }
 
-    // Button wired to Quit
-    //public void QuitGame()
-    //{
-    //    #if UNITY_EDITOR
-    //    UnityEditor.EditorApplication.isPlaying = false;
-    //    #else
-    //    Application.Quit();
-    //    #endif
-    //}
+    IEnumerator FadeAndLoad()
+    {
+        // 1. Fade the black panel to Opacity 1 (Solid Black)
+        if (fadePanel != null)
+        {
+            fadePanel.CrossFadeAlpha(1f, fadeDuration, false);
+        }
+
+        // 2. Wait for the fade to finish
+        yield return new WaitForSeconds(fadeDuration);
+
+        // 3. Load the CutScene (Make sure this name matches your scene exactly!)
+        SceneManager.LoadScene("CutScene");
+    }
+
     public void QuitGame()
     {
-        Debug.Log("Quit button pressed!"); // for testing in the Editor
+        Debug.Log("Quit button pressed!");
         Application.Quit();
     }
 
-    // Options
     public void OpenOptions()
     {
         if (menuPanel != null) menuPanel.SetActive(false);
@@ -64,7 +76,6 @@ public class MenuManager : MonoBehaviour
 
     public void SetVolume(float value)
     {
-        // Set Unity master volume (simple approach)
         AudioListener.volume = value;
         PlayerPrefs.SetFloat("masterVolume", value);
     }
