@@ -5,6 +5,10 @@ using System.Collections; // Needed for IEnumerator
 
 public class MenuManager : MonoBehaviour
 {
+    [Header("Loading Screen")]
+    public GameObject loadingPanel;
+    public Slider loadingSlider;
+
     [Header("Panels")]
     public GameObject menuPanel;
     public GameObject optionsPanel;
