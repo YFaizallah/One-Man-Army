@@ -28696,6 +28696,20 @@ MonoBehaviour:
       text: No survivors
     - characterName: John
       text: I did not find the girl and her mother
+    - characterName: Soldier
+      text: Mission Failed?
+    - characterName: Soldier
+      text: You didn't see any survivors?
+    - characterName: John
+      text: No
+    - characterName: John
+      text: I did not see anyone only infected
+    - characterName: John
+      text: Drop the nuke
+    - characterName: Soldier
+      text: Roger that
+    - characterName: John
+      text: No one should leave this city
   manOnlyScenario:
     scenarioName: TalkedToTheManScenario
     lines:
@@ -82115,7 +82129,7 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Events.m_Events.Array.data[9].m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
-      objectReference: {fileID: 388781499}
+      objectReference: {fileID: 388781502}
     - target: {fileID: 4217325204264167624, guid: 85ecc59948776734280294d96850ff6b,
         type: 3}
       propertyPath: m_Events.m_Events.Array.data[0].m_PersistentCalls.m_Calls.Array.data[0].m_CallState
@@ -82258,6 +82272,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4217325204264167624, guid: 85ecc59948776734280294d96850ff6b,
         type: 3}
+      propertyPath: m_Events.m_Events.Array.data[9].m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: PlayNextDialogue
+      objectReference: {fileID: 0}
+    - target: {fileID: 4217325204264167624, guid: 85ecc59948776734280294d96850ff6b,
+        type: 3}
       propertyPath: m_Events.m_Events.Array.data[0].m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
       value: DialogueControllerCutscene, Assembly-CSharp
       objectReference: {fileID: 0}
@@ -82339,7 +82358,7 @@ PrefabInstance:
     - target: {fileID: 4217325204264167624, guid: 85ecc59948776734280294d96850ff6b,
         type: 3}
       propertyPath: m_Events.m_Events.Array.data[9].m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
-      value: UnityEngine.GameObject, UnityEngine
+      value: DialogueControllerCutscene, Assembly-CSharp
       objectReference: {fileID: 0}
     - target: {fileID: 4217325204264167624, guid: 85ecc59948776734280294d96850ff6b,
         type: 3}
@@ -82439,6 +82458,11 @@ PrefabInstance:
     - target: {fileID: 4217325204264167624, guid: 85ecc59948776734280294d96850ff6b,
         type: 3}
       propertyPath: m_Events.m_Events.Array.data[8].m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
+      value: UnityEngine.Object, UnityEngine
+      objectReference: {fileID: 0}
+    - target: {fileID: 4217325204264167624, guid: 85ecc59948776734280294d96850ff6b,
+        type: 3}
+      propertyPath: m_Events.m_Events.Array.data[9].m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
       value: UnityEngine.Object, UnityEngine
       objectReference: {fileID: 0}
     - target: {fileID: 5048810058107294807, guid: 85ecc59948776734280294d96850ff6b,
