@@ -2,65 +2,149 @@ using UnityEngine;
 using TMPro;
 using System.Collections;
 
+#region Dialogue Data Structures
+
+
+[System.Serializable]
+public class DialogueScenario
+{
+    public string scenarioName;
+    public DialogueLine[] lines;
+}
+
+#endregion
+
 /// <summary>
-/// Handles the UI portion of dialogues: speaker name, message, and a typewriter effect.
+/// Handles cutscene dialogue UI using Timeline signals.
+/// Supports multiple dialogue scenarios driven by story state.
 /// </summary>
 public class DialogueControllerCutscene : MonoBehaviour
 {
-    public TextMeshProUGUI nameText;      // Text component for speaker's name
-    public TextMeshProUGUI messageText;   // Text component for the dialogue message
+    // =========================
+    // UI REFERENCES
+    // =========================
+    [Header("UI References")]
+    public TextMeshProUGUI nameText;
+    public TextMeshProUGUI messageText;
 
-    public float typingSpeed = 0.03f;     // Delay between each typed character
+    // =========================
+    // TYPING SETTINGS
+    // =========================
+    [Header("Typing Settings")]
+    public float typingSpeed = 0.03f;
 
-    private Coroutine typingCoroutine;    // Used to stop previous typing if a new one begins
+    // =========================
+    // DIALOGUE SCENARIOS
+    // =========================
+    [Header("Dialogue Scenarios")]
+    public DialogueScenario nobodyScenario;          // talked to nobody
+    public DialogueScenario manOnlyScenario;         // talked to man only
+    public DialogueScenario womanOrBothScenario;     // talked to woman OR both
 
-    // ---------------------------------------------------------------
-    // Sets the speaker name instantly (used by Timeline or scripts)
-    // ---------------------------------------------------------------
+    // =========================
+    // INTERNAL STATE
+    // =========================
+    private DialogueLine[] activeLines;
+    private int currentIndex = 0;
+    private bool dialogueStarted = false;
+    private Coroutine typingCoroutine; // To manage typing coroutine
+
+
+    // =====================================================
+    // TIMELINE SIGNAL #1
+    // Select which scenario to use at cutscene start
+    // =====================================================
+    public void SelectHelicopterScenario()
+    {
+        // Clear UI placeholders
+        if (nameText != null) nameText.text = "";
+        if (messageText != null) messageText.text = "";
+
+        // 1️⃣ Talked to nobody
+        if (!StoryProgress.talkedToMan && !StoryProgress.talkedToWoman)
+        {
+            activeLines = nobodyScenario.lines;
+        }
+        // 2️⃣ Talked to man only
+        else if (StoryProgress.talkedToMan && !StoryProgress.talkedToWoman)
+        {
+            activeLines = manOnlyScenario.lines;
+        }
+        // 3️⃣ Talked to woman OR talked to both
+        else
+        {
+            activeLines = womanOrBothScenario.lines;
+        }
+
+        currentIndex = 0;
+        dialogueStarted = true;
+        PlayCurrentLine();
+    }
+
+    // =====================================================
+    // TIMELINE SIGNAL #2+
+    // Advance to next dialogue line
+    // =====================================================
+    public void PlayNextDialogue()
+    {
+
+        if (!dialogueStarted || activeLines == null)
+            return;
+
+        currentIndex++;
+
+        if (currentIndex >= activeLines.Length)
+            return;
+
+        PlayCurrentLine();
+    }
+
+    // =====================================================
+    // INTERNAL: Play current dialogue line
+    // =====================================================
+    private void PlayCurrentLine()
+    {
+        DialogueLine line = activeLines[currentIndex];
+        SetSpeaker(line.characterName);
+        SetMessage(line.text);
+    }
+
+    // =====================================================
+    // ORIGINAL METHODS (UNCHANGED)
+    // =====================================================
     public void SetSpeaker(string speaker)
     {
         if (nameText == null)
         {
-            Debug.LogWarning("DialogueController has no nameText assigned."); // Warn when UI reference missing
-            return;                                                         // Skip update without valid target
+            Debug.LogWarning("DialogueControllerCutscene: nameText not assigned.");
+            return;
         }
-        nameText.text = speaker;                                             // Populate the speaker label immediately
+
+        nameText.text = speaker;
     }
 
-    // ---------------------------------------------------------------
-    // Starts a typewriter effect for the given message
-    //
-    // Timeline or scripts should call it
-    // ---------------------------------------------------------------
     public void SetMessage(string message)
     {
         if (messageText == null)
         {
-            Debug.LogWarning("DialogueController has no messageText assigned."); // Warn if primary text element missing
-            return;                                                             // Avoid running typewriter without UI
+            Debug.LogWarning("DialogueControllerCutscene: messageText not assigned.");
+            return;
         }
 
-        // If a previous typing animation is still running, stop it
         if (typingCoroutine != null)
-            StopCoroutine(typingCoroutine);             // Cancel any in-progress typewriter animation
+            StopCoroutine(typingCoroutine);
 
-        // Start typing the new message letter by letter
-        typingCoroutine = StartCoroutine(TypeMessage(message)); // Launch coroutine for gradual reveal
+        typingCoroutine = StartCoroutine(TypeMessage(message));
     }
 
-    // ---------------------------------------------------------------
-    // Typewriter coroutine:
-    // Reveals the text gradually, one character at a time.
-    // ---------------------------------------------------------------
-    IEnumerator TypeMessage(string message)
+    private IEnumerator TypeMessage(string message)
     {
-        messageText.text = "";  // Clear text before typing begins
+        messageText.text = "";
 
-        // Loop through each character in the message
-        foreach (char c in message)                        // Iterate over each character to reveal sequentially
+        foreach (char c in message)
         {
-            messageText.text += c;               // Append the next character to the label
-            yield return new WaitForSeconds(typingSpeed);  // Pause before showing the next character
+            messageText.text += c;
+            yield return new WaitForSeconds(typingSpeed);
         }
     }
 }

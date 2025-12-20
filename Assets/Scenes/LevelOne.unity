@@ -15929,6 +15929,7 @@ MonoBehaviour:
   continueButton: {fileID: 0}
   interactionPopup: {fileID: 0}
   playerUICanvas: {fileID: 336258547}
+  typingSpeed: 0.03
 --- !u!1 &327163792 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 2353437462483333077, guid: c4c7ae4b3af25b94f9a373659557c13d,
@@ -18913,7 +18914,7 @@ PrefabInstance:
     - target: {fileID: 2748913124992463393, guid: 19eadcf8fbed56b4da77ca94c1b4145f,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: 247.06
+      value: 152.3
       objectReference: {fileID: 0}
     - target: {fileID: 2748913124992463393, guid: 19eadcf8fbed56b4da77ca94c1b4145f,
         type: 3}
@@ -18923,7 +18924,7 @@ PrefabInstance:
     - target: {fileID: 2748913124992463393, guid: 19eadcf8fbed56b4da77ca94c1b4145f,
         type: 3}
       propertyPath: m_LocalPosition.z
-      value: 26.5
+      value: -22.3
       objectReference: {fileID: 0}
     - target: {fileID: 2748913124992463393, guid: 19eadcf8fbed56b4da77ca94c1b4145f,
         type: 3}
@@ -19660,6 +19661,71 @@ MonoBehaviour:
   nameText: {fileID: 438279439}
   messageText: {fileID: 1027719736}
   typingSpeed: 0.03
+  nobodyScenario:
+    scenarioName: TalkedToNoBodyScenario
+    lines:
+    - characterName: John
+      text: No survivors
+    - characterName: John
+      text: I did not find the girl and her mother
+    - characterName: Soldier
+      text: Mission Failed?
+    - characterName: Soldier
+      text: You didn't see any survivors?
+    - characterName: John
+      text: No
+    - characterName: John
+      text: I did not see anyone only infected
+    - characterName: John
+      text: Drop the nuke
+    - characterName: Soldier
+      text: Roger that
+    - characterName: John
+      text: No one should leave this city
+  manOnlyScenario:
+    scenarioName: TalkedToTheManScenario
+    lines:
+    - characterName: John
+      text: I did not find the girl.
+    - characterName: John
+      text: Drop the nuke.
+    - characterName: Soldier
+      text: Was there any survivors?
+    - characterName: John
+      text: Yes
+    - characterName: Soldier
+      text: We will drop some squads to eliminate the infected and save as much survivors
+        as we can.
+    - characterName: John
+      text: As I remember this was not the plan.
+    - characterName: Soldier
+      text: Yes, our main plan was to save minister's family but now we can save
+        people as we failed the mission.
+    - characterName: John
+      text: I talked to a man named Daniel near the landing site.
+    - characterName: Soldier
+      text: Roger that.
+  womanOrBothScenario:
+    scenarioName: TalkedToBothScenario
+    lines:
+    - characterName: John
+      text: We are safe and in the helicopter.
+    - characterName: John
+      text: Drop the nuke.
+    - characterName: Sarah
+      text: What?
+    - characterName: Sarah
+      text: They wil die, I saw healthy people. You lied to me
+    - characterName: John
+      text: We cannot risk them leaving the city and being infected.
+    - characterName: Sarah
+      text: Why only me?
+    - characterName: John
+      text: Because of your father, world is not fair.
+    - characterName: Sarah
+      text: That's wrong
+    - characterName: John
+      text: One day you will understand
 --- !u!1001 &388996535
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -42304,10 +42370,28 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   player: {fileID: 1593357888}
   dialogueLines:
-  - characterName: Side
-    text: HI my  name is slime shady
-  - characterName: MC
-    text: what is your name
+  - characterName: Man
+    text: Hello there
+  - characterName: John
+    text: 
+  - characterName: Man
+    text: 'Okay '
+  - characterName: Daniel
+    text: My name is Daniel, I don't know what happened suddenly everyone started
+      eating each other
+  - characterName: John
+    text: Did you see a girl with her mother, having black hair and her mother is
+      blonde.
+  - characterName: Daniel
+    text: No, I did not see a girl and her mother, but I saw a girl running.
+  - characterName: John
+    text: Where?
+  - characterName: Daniel
+    text: She was heading to the city park.
+  - characterName: Daniel
+    text: Don't you know when help will come?
+  - characterName: John
+    text: Soon
   detectionRange: 5
   interactKey: 101
   rotationSpeed: 5
@@ -65123,7 +65207,7 @@ PlayableDirector:
   m_PlayableAsset: {fileID: 11400000, guid: e37511df962c9134291fba6f83e4ed0e, type: 2}
   m_InitialState: 0
   m_WrapMode: 2
-  m_DirectorUpdateMode: 1
+  m_DirectorUpdateMode: 2
   m_InitialTime: 0
   m_SceneBindings:
   - key: {fileID: 8785107156914901301, guid: e37511df962c9134291fba6f83e4ed0e, type: 2}
@@ -70893,6 +70977,7 @@ MonoBehaviour:
   continueButton: {fileID: 416835401}
   interactionPopup: {fileID: 1439423143}
   playerUICanvas: {fileID: 336258547}
+  typingSpeed: 0.03
 --- !u!1 &1303105633 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 2579563677705824428, guid: 18def28a0ae3af04b92baf54be5868be,
@@ -72893,12 +72978,12 @@ PrefabInstance:
     - target: {fileID: 4217325204264167624, guid: 85ecc59948776734280294d96850ff6b,
         type: 3}
       propertyPath: m_Events.m_Events.Array.size
-      value: 7
+      value: 10
       objectReference: {fileID: 0}
     - target: {fileID: 4217325204264167624, guid: 85ecc59948776734280294d96850ff6b,
         type: 3}
       propertyPath: m_Events.m_Signals.Array.size
-      value: 7
+      value: 10
       objectReference: {fileID: 0}
     - target: {fileID: 4217325204264167624, guid: 85ecc59948776734280294d96850ff6b,
         type: 3}
@@ -72944,28 +73029,101 @@ PrefabInstance:
         type: 2}
     - target: {fileID: 4217325204264167624, guid: 85ecc59948776734280294d96850ff6b,
         type: 3}
+      propertyPath: 'm_Events.m_Signals.Array.data[7]'
+      value: 
+      objectReference: {fileID: 11400000, guid: 8c846dc6fdfd5e3429eb49cc617f25c2,
+        type: 2}
+    - target: {fileID: 4217325204264167624, guid: 85ecc59948776734280294d96850ff6b,
+        type: 3}
+      propertyPath: 'm_Events.m_Signals.Array.data[8]'
+      value: 
+      objectReference: {fileID: 11400000, guid: 6fa2ee71d8dcc1944b1fa5d9057e6aa5,
+        type: 2}
+    - target: {fileID: 4217325204264167624, guid: 85ecc59948776734280294d96850ff6b,
+        type: 3}
+      propertyPath: 'm_Events.m_Signals.Array.data[9]'
+      value: 
+      objectReference: {fileID: 11400000, guid: 8b500e425ce7cc74e8a008d069a425d4,
+        type: 2}
+    - target: {fileID: 4217325204264167624, guid: 85ecc59948776734280294d96850ff6b,
+        type: 3}
+      propertyPath: m_Events.m_Events.Array.data[0].m_PersistentCalls.m_Calls.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4217325204264167624, guid: 85ecc59948776734280294d96850ff6b,
+        type: 3}
+      propertyPath: m_Events.m_Events.Array.data[1].m_PersistentCalls.m_Calls.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4217325204264167624, guid: 85ecc59948776734280294d96850ff6b,
+        type: 3}
       propertyPath: m_Events.m_Events.Array.data[2].m_PersistentCalls.m_Calls.Array.size
-      value: 2
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 4217325204264167624, guid: 85ecc59948776734280294d96850ff6b,
         type: 3}
       propertyPath: m_Events.m_Events.Array.data[3].m_PersistentCalls.m_Calls.Array.size
-      value: 2
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4217325204264167624, guid: 85ecc59948776734280294d96850ff6b,
+        type: 3}
+      propertyPath: m_Events.m_Events.Array.data[4].m_PersistentCalls.m_Calls.Array.size
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 4217325204264167624, guid: 85ecc59948776734280294d96850ff6b,
         type: 3}
       propertyPath: m_Events.m_Events.Array.data[5].m_PersistentCalls.m_Calls.Array.size
-      value: 2
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 4217325204264167624, guid: 85ecc59948776734280294d96850ff6b,
         type: 3}
       propertyPath: m_Events.m_Events.Array.data[6].m_PersistentCalls.m_Calls.Array.size
-      value: 2
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4217325204264167624, guid: 85ecc59948776734280294d96850ff6b,
+        type: 3}
+      propertyPath: m_Events.m_Events.Array.data[7].m_PersistentCalls.m_Calls.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4217325204264167624, guid: 85ecc59948776734280294d96850ff6b,
+        type: 3}
+      propertyPath: m_Events.m_Events.Array.data[8].m_PersistentCalls.m_Calls.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4217325204264167624, guid: 85ecc59948776734280294d96850ff6b,
+        type: 3}
+      propertyPath: m_Events.m_Events.Array.data[9].m_PersistentCalls.m_Calls.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4217325204264167624, guid: 85ecc59948776734280294d96850ff6b,
+        type: 3}
+      propertyPath: m_Events.m_Events.Array.data[0].m_PersistentCalls.m_Calls.Array.data[0].m_Mode
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4217325204264167624, guid: 85ecc59948776734280294d96850ff6b,
+        type: 3}
+      propertyPath: m_Events.m_Events.Array.data[1].m_PersistentCalls.m_Calls.Array.data[0].m_Mode
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4217325204264167624, guid: 85ecc59948776734280294d96850ff6b,
+        type: 3}
+      propertyPath: m_Events.m_Events.Array.data[2].m_PersistentCalls.m_Calls.Array.data[0].m_Mode
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4217325204264167624, guid: 85ecc59948776734280294d96850ff6b,
+        type: 3}
+      propertyPath: m_Events.m_Events.Array.data[3].m_PersistentCalls.m_Calls.Array.data[0].m_Mode
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4217325204264167624, guid: 85ecc59948776734280294d96850ff6b,
+        type: 3}
+      propertyPath: m_Events.m_Events.Array.data[4].m_PersistentCalls.m_Calls.Array.data[0].m_Mode
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 4217325204264167624, guid: 85ecc59948776734280294d96850ff6b,
         type: 3}
       propertyPath: m_Events.m_Events.Array.data[5].m_PersistentCalls.m_Calls.Array.data[0].m_Mode
-      value: 5
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 4217325204264167624, guid: 85ecc59948776734280294d96850ff6b,
         type: 3}
@@ -72975,12 +73133,27 @@ PrefabInstance:
     - target: {fileID: 4217325204264167624, guid: 85ecc59948776734280294d96850ff6b,
         type: 3}
       propertyPath: m_Events.m_Events.Array.data[6].m_PersistentCalls.m_Calls.Array.data[0].m_Mode
-      value: 5
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 4217325204264167624, guid: 85ecc59948776734280294d96850ff6b,
         type: 3}
       propertyPath: m_Events.m_Events.Array.data[6].m_PersistentCalls.m_Calls.Array.data[1].m_Mode
       value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 4217325204264167624, guid: 85ecc59948776734280294d96850ff6b,
+        type: 3}
+      propertyPath: m_Events.m_Events.Array.data[7].m_PersistentCalls.m_Calls.Array.data[0].m_Mode
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4217325204264167624, guid: 85ecc59948776734280294d96850ff6b,
+        type: 3}
+      propertyPath: m_Events.m_Events.Array.data[8].m_PersistentCalls.m_Calls.Array.data[0].m_Mode
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4217325204264167624, guid: 85ecc59948776734280294d96850ff6b,
+        type: 3}
+      propertyPath: m_Events.m_Events.Array.data[9].m_PersistentCalls.m_Calls.Array.data[0].m_Mode
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 4217325204264167624, guid: 85ecc59948776734280294d96850ff6b,
         type: 3}
@@ -73054,6 +73227,66 @@ PrefabInstance:
       objectReference: {fileID: 388781502}
     - target: {fileID: 4217325204264167624, guid: 85ecc59948776734280294d96850ff6b,
         type: 3}
+      propertyPath: m_Events.m_Events.Array.data[7].m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 388781502}
+    - target: {fileID: 4217325204264167624, guid: 85ecc59948776734280294d96850ff6b,
+        type: 3}
+      propertyPath: m_Events.m_Events.Array.data[8].m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 388781502}
+    - target: {fileID: 4217325204264167624, guid: 85ecc59948776734280294d96850ff6b,
+        type: 3}
+      propertyPath: m_Events.m_Events.Array.data[9].m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 388781502}
+    - target: {fileID: 4217325204264167624, guid: 85ecc59948776734280294d96850ff6b,
+        type: 3}
+      propertyPath: m_Events.m_Events.Array.data[0].m_PersistentCalls.m_Calls.Array.data[0].m_CallState
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4217325204264167624, guid: 85ecc59948776734280294d96850ff6b,
+        type: 3}
+      propertyPath: m_Events.m_Events.Array.data[1].m_PersistentCalls.m_Calls.Array.data[0].m_CallState
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4217325204264167624, guid: 85ecc59948776734280294d96850ff6b,
+        type: 3}
+      propertyPath: m_Events.m_Events.Array.data[1].m_PersistentCalls.m_Calls.Array.data[1].m_CallState
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4217325204264167624, guid: 85ecc59948776734280294d96850ff6b,
+        type: 3}
+      propertyPath: m_Events.m_Events.Array.data[2].m_PersistentCalls.m_Calls.Array.data[0].m_CallState
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4217325204264167624, guid: 85ecc59948776734280294d96850ff6b,
+        type: 3}
+      propertyPath: m_Events.m_Events.Array.data[2].m_PersistentCalls.m_Calls.Array.data[1].m_CallState
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4217325204264167624, guid: 85ecc59948776734280294d96850ff6b,
+        type: 3}
+      propertyPath: m_Events.m_Events.Array.data[3].m_PersistentCalls.m_Calls.Array.data[0].m_CallState
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4217325204264167624, guid: 85ecc59948776734280294d96850ff6b,
+        type: 3}
+      propertyPath: m_Events.m_Events.Array.data[3].m_PersistentCalls.m_Calls.Array.data[1].m_CallState
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4217325204264167624, guid: 85ecc59948776734280294d96850ff6b,
+        type: 3}
+      propertyPath: m_Events.m_Events.Array.data[4].m_PersistentCalls.m_Calls.Array.data[0].m_CallState
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4217325204264167624, guid: 85ecc59948776734280294d96850ff6b,
+        type: 3}
+      propertyPath: m_Events.m_Events.Array.data[4].m_PersistentCalls.m_Calls.Array.data[1].m_CallState
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4217325204264167624, guid: 85ecc59948776734280294d96850ff6b,
+        type: 3}
       propertyPath: m_Events.m_Events.Array.data[5].m_PersistentCalls.m_Calls.Array.data[0].m_CallState
       value: 2
       objectReference: {fileID: 0}
@@ -73074,8 +73307,23 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4217325204264167624, guid: 85ecc59948776734280294d96850ff6b,
         type: 3}
+      propertyPath: m_Events.m_Events.Array.data[7].m_PersistentCalls.m_Calls.Array.data[0].m_CallState
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 4217325204264167624, guid: 85ecc59948776734280294d96850ff6b,
+        type: 3}
+      propertyPath: m_Events.m_Events.Array.data[8].m_PersistentCalls.m_Calls.Array.data[0].m_CallState
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 4217325204264167624, guid: 85ecc59948776734280294d96850ff6b,
+        type: 3}
+      propertyPath: m_Events.m_Events.Array.data[9].m_PersistentCalls.m_Calls.Array.data[0].m_CallState
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 4217325204264167624, guid: 85ecc59948776734280294d96850ff6b,
+        type: 3}
       propertyPath: m_Events.m_Events.Array.data[0].m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
-      value: SetSpeaker
+      value: 
       objectReference: {fileID: 0}
     - target: {fileID: 4217325204264167624, guid: 85ecc59948776734280294d96850ff6b,
         type: 3}
@@ -73084,13 +73332,28 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4217325204264167624, guid: 85ecc59948776734280294d96850ff6b,
         type: 3}
+      propertyPath: m_Events.m_Events.Array.data[1].m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: SelectHelicopterScenario
+      objectReference: {fileID: 0}
+    - target: {fileID: 4217325204264167624, guid: 85ecc59948776734280294d96850ff6b,
+        type: 3}
+      propertyPath: m_Events.m_Events.Array.data[2].m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: PlayNextDialogue
+      objectReference: {fileID: 0}
+    - target: {fileID: 4217325204264167624, guid: 85ecc59948776734280294d96850ff6b,
+        type: 3}
       propertyPath: m_Events.m_Events.Array.data[3].m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
-      value: SetSpeaker
+      value: PlayNextDialogue
+      objectReference: {fileID: 0}
+    - target: {fileID: 4217325204264167624, guid: 85ecc59948776734280294d96850ff6b,
+        type: 3}
+      propertyPath: m_Events.m_Events.Array.data[4].m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: PlayNextDialogue
       objectReference: {fileID: 0}
     - target: {fileID: 4217325204264167624, guid: 85ecc59948776734280294d96850ff6b,
         type: 3}
       propertyPath: m_Events.m_Events.Array.data[5].m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
-      value: SetSpeaker
+      value: PlayNextDialogue
       objectReference: {fileID: 0}
     - target: {fileID: 4217325204264167624, guid: 85ecc59948776734280294d96850ff6b,
         type: 3}
@@ -73100,12 +73363,27 @@ PrefabInstance:
     - target: {fileID: 4217325204264167624, guid: 85ecc59948776734280294d96850ff6b,
         type: 3}
       propertyPath: m_Events.m_Events.Array.data[6].m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
-      value: SetSpeaker
+      value: PlayNextDialogue
       objectReference: {fileID: 0}
     - target: {fileID: 4217325204264167624, guid: 85ecc59948776734280294d96850ff6b,
         type: 3}
       propertyPath: m_Events.m_Events.Array.data[6].m_PersistentCalls.m_Calls.Array.data[1].m_MethodName
       value: SetMessage
+      objectReference: {fileID: 0}
+    - target: {fileID: 4217325204264167624, guid: 85ecc59948776734280294d96850ff6b,
+        type: 3}
+      propertyPath: m_Events.m_Events.Array.data[7].m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: PlayNextDialogue
+      objectReference: {fileID: 0}
+    - target: {fileID: 4217325204264167624, guid: 85ecc59948776734280294d96850ff6b,
+        type: 3}
+      propertyPath: m_Events.m_Events.Array.data[8].m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: PlayNextDialogue
+      objectReference: {fileID: 0}
+    - target: {fileID: 4217325204264167624, guid: 85ecc59948776734280294d96850ff6b,
+        type: 3}
+      propertyPath: m_Events.m_Events.Array.data[9].m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: PlayNextDialogue
       objectReference: {fileID: 0}
     - target: {fileID: 4217325204264167624, guid: 85ecc59948776734280294d96850ff6b,
         type: 3}
@@ -73179,8 +73457,23 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4217325204264167624, guid: 85ecc59948776734280294d96850ff6b,
         type: 3}
+      propertyPath: m_Events.m_Events.Array.data[7].m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
+      value: DialogueControllerCutscene, Assembly-CSharp
+      objectReference: {fileID: 0}
+    - target: {fileID: 4217325204264167624, guid: 85ecc59948776734280294d96850ff6b,
+        type: 3}
+      propertyPath: m_Events.m_Events.Array.data[8].m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
+      value: DialogueControllerCutscene, Assembly-CSharp
+      objectReference: {fileID: 0}
+    - target: {fileID: 4217325204264167624, guid: 85ecc59948776734280294d96850ff6b,
+        type: 3}
+      propertyPath: m_Events.m_Events.Array.data[9].m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
+      value: DialogueControllerCutscene, Assembly-CSharp
+      objectReference: {fileID: 0}
+    - target: {fileID: 4217325204264167624, guid: 85ecc59948776734280294d96850ff6b,
+        type: 3}
       propertyPath: m_Events.m_Events.Array.data[0].m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_StringArgument
-      value: MC
+      value: John
       objectReference: {fileID: 0}
     - target: {fileID: 4217325204264167624, guid: 85ecc59948776734280294d96850ff6b,
         type: 3}
@@ -73190,17 +73483,17 @@ PrefabInstance:
     - target: {fileID: 4217325204264167624, guid: 85ecc59948776734280294d96850ff6b,
         type: 3}
       propertyPath: m_Events.m_Events.Array.data[1].m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_StringArgument
-      value: MC
+      value: John
       objectReference: {fileID: 0}
     - target: {fileID: 4217325204264167624, guid: 85ecc59948776734280294d96850ff6b,
         type: 3}
       propertyPath: m_Events.m_Events.Array.data[1].m_PersistentCalls.m_Calls.Array.data[1].m_Arguments.m_StringArgument
-      value: Drop the nuke.
+      value: 
       objectReference: {fileID: 0}
     - target: {fileID: 4217325204264167624, guid: 85ecc59948776734280294d96850ff6b,
         type: 3}
       propertyPath: m_Events.m_Events.Array.data[2].m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_StringArgument
-      value: Girl
+      value: Sarah
       objectReference: {fileID: 0}
     - target: {fileID: 4217325204264167624, guid: 85ecc59948776734280294d96850ff6b,
         type: 3}
@@ -73210,17 +73503,17 @@ PrefabInstance:
     - target: {fileID: 4217325204264167624, guid: 85ecc59948776734280294d96850ff6b,
         type: 3}
       propertyPath: m_Events.m_Events.Array.data[3].m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_StringArgument
-      value: Girl
+      value: Sarah
       objectReference: {fileID: 0}
     - target: {fileID: 4217325204264167624, guid: 85ecc59948776734280294d96850ff6b,
         type: 3}
       propertyPath: m_Events.m_Events.Array.data[3].m_PersistentCalls.m_Calls.Array.data[1].m_Arguments.m_StringArgument
-      value: They wil die, I saw healthy people
+      value: They wil die, I saw healthy people. You lied to me
       objectReference: {fileID: 0}
     - target: {fileID: 4217325204264167624, guid: 85ecc59948776734280294d96850ff6b,
         type: 3}
       propertyPath: m_Events.m_Events.Array.data[4].m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_StringArgument
-      value: MC
+      value: John
       objectReference: {fileID: 0}
     - target: {fileID: 4217325204264167624, guid: 85ecc59948776734280294d96850ff6b,
         type: 3}
@@ -73230,22 +73523,22 @@ PrefabInstance:
     - target: {fileID: 4217325204264167624, guid: 85ecc59948776734280294d96850ff6b,
         type: 3}
       propertyPath: m_Events.m_Events.Array.data[5].m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_StringArgument
-      value: Girl
+      value: John
       objectReference: {fileID: 0}
     - target: {fileID: 4217325204264167624, guid: 85ecc59948776734280294d96850ff6b,
         type: 3}
       propertyPath: m_Events.m_Events.Array.data[5].m_PersistentCalls.m_Calls.Array.data[1].m_Arguments.m_StringArgument
-      value: Why only me
+      value: Why only me?
       objectReference: {fileID: 0}
     - target: {fileID: 4217325204264167624, guid: 85ecc59948776734280294d96850ff6b,
         type: 3}
       propertyPath: m_Events.m_Events.Array.data[6].m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_StringArgument
-      value: MC
+      value: John
       objectReference: {fileID: 0}
     - target: {fileID: 4217325204264167624, guid: 85ecc59948776734280294d96850ff6b,
         type: 3}
       propertyPath: m_Events.m_Events.Array.data[6].m_PersistentCalls.m_Calls.Array.data[1].m_Arguments.m_StringArgument
-      value: Because of your father, world is unfair.
+      value: Because of your father, world is not fair.
       objectReference: {fileID: 0}
     - target: {fileID: 4217325204264167624, guid: 85ecc59948776734280294d96850ff6b,
         type: 3}
@@ -73265,6 +73558,21 @@ PrefabInstance:
     - target: {fileID: 4217325204264167624, guid: 85ecc59948776734280294d96850ff6b,
         type: 3}
       propertyPath: m_Events.m_Events.Array.data[6].m_PersistentCalls.m_Calls.Array.data[1].m_Arguments.m_ObjectArgumentAssemblyTypeName
+      value: UnityEngine.Object, UnityEngine
+      objectReference: {fileID: 0}
+    - target: {fileID: 4217325204264167624, guid: 85ecc59948776734280294d96850ff6b,
+        type: 3}
+      propertyPath: m_Events.m_Events.Array.data[7].m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
+      value: UnityEngine.Object, UnityEngine
+      objectReference: {fileID: 0}
+    - target: {fileID: 4217325204264167624, guid: 85ecc59948776734280294d96850ff6b,
+        type: 3}
+      propertyPath: m_Events.m_Events.Array.data[8].m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
+      value: UnityEngine.Object, UnityEngine
+      objectReference: {fileID: 0}
+    - target: {fileID: 4217325204264167624, guid: 85ecc59948776734280294d96850ff6b,
+        type: 3}
+      propertyPath: m_Events.m_Events.Array.data[9].m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
       value: UnityEngine.Object, UnityEngine
       objectReference: {fileID: 0}
     - target: {fileID: 5048810058107294807, guid: 85ecc59948776734280294d96850ff6b,
@@ -99624,9 +99932,35 @@ MonoBehaviour:
   player: {fileID: 1593357888}
   dialogueLines:
   - characterName: Girl
-    text: Hello I am your Target
-  - characterName: MC
-    text: Follow Me
+    text: Sir
+  - characterName: John
+    text: What's your name?
+  - characterName: Sarah
+    text: Sarah
+  - characterName: John
+    text: I came to save you, where is you mother?
+  - characterName: Sarah
+    text: Mother
+  - characterName: Sarah
+    text: She died trying to protect me from the the people that were running after
+      us
+  - characterName: Sarah
+    text: She died for me to live
+  - characterName: John
+    text: I'm
+  - characterName: John
+    text: I'm sorry
+  - characterName: John
+    text: Let's get going
+  - characterName: John
+    text: We are going to the city park nearby there is a helicopter waiting for
+      us.
+  - characterName: Sarah
+    text: What will happen to the rest of the people?
+  - characterName: John
+    text: Help will come for them later, follow me!!
+  - characterName: 'Sarah '
+    text: Okay
   detectionRange: 8
   interactKey: 101
   followSpeed: 2.5
@@ -130976,7 +131310,6 @@ SceneRoots:
   - {fileID: 410087041}
   - {fileID: 832575519}
   - {fileID: 1326159319}
-  - {fileID: 378385373}
   - {fileID: 8966093365745844002}
   - {fileID: 8472299938975404942}
   - {fileID: 336258553}
@@ -130987,6 +131320,7 @@ SceneRoots:
   - {fileID: 650490063}
   - {fileID: 1928607611}
   - {fileID: 986189261}
+  - {fileID: 378385373}
   - {fileID: 691584576}
   - {fileID: 1162165348}
   - {fileID: 2024279373}

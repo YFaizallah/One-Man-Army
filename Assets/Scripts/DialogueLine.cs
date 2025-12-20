@@ -5,6 +5,6 @@ public class DialogueLine
 {
     public string characterName;  // Name of the character speaking
     
-    [TextArea(2, 5)]
+    [TextArea(1,1)]
     public string text;           // The dialogue text
 }

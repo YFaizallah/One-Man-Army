@@ -95,6 +95,8 @@ public class NPCManScript : MonoBehaviour
         dialogueStarted = false;
         hasTalkedOnce = true;
 
+        StoryProgress.talkedToMan = true; // Update story progress
+
         if (animator != null)
         {
             animator.SetBool("NPCTalked", false);

@@ -97,6 +97,8 @@ public class NPCWomanScript : MonoBehaviour
         if (rb != null)
             rb.constraints = RigidbodyConstraints.FreezeRotationX | RigidbodyConstraints.FreezeRotationZ;
 
+        StoryProgress.talkedToWoman = true; // Update story progress
+
         if (animator != null)
         {
             animator.SetBool("hasTalked", true);
