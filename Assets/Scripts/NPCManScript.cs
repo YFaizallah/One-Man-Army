@@ -85,10 +85,11 @@ public class NPCManScript : MonoBehaviour
             LevelManager.instance.arrowActive = false;
         }
 
+        //  IMPORTANT: pass THIS NPC to DialogueUI
         DialogueUI.instance.StartDialogue(dialogueLines, gameObject);
     }
 
-    // ?? THIS WAS THE MISSING LINK
+    // CALLED BY DialogueUI
     public void EndDialogue()
     {
         dialogueStarted = false;
@@ -100,11 +101,9 @@ public class NPCManScript : MonoBehaviour
             animator.SetBool("PlayerNear", false);
         }
 
-        // ? TELL LEVEL MANAGER THAT MAN WAS TALKED TO
+        // Notify LevelManager
         if (LevelManager.instance != null)
-        {
             LevelManager.instance.PlayerTalkedToNPC();
-        }
     }
 
     void LookAtPlayer()
