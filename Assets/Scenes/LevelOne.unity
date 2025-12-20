@@ -19055,7 +19055,7 @@ PrefabInstance:
     - target: {fileID: 2748913124992463393, guid: 19eadcf8fbed56b4da77ca94c1b4145f,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: 152.3
+      value: 115
       objectReference: {fileID: 0}
     - target: {fileID: 2748913124992463393, guid: 19eadcf8fbed56b4da77ca94c1b4145f,
         type: 3}
@@ -19065,7 +19065,7 @@ PrefabInstance:
     - target: {fileID: 2748913124992463393, guid: 19eadcf8fbed56b4da77ca94c1b4145f,
         type: 3}
       propertyPath: m_LocalPosition.z
-      value: -22.3
+      value: -297
       objectReference: {fileID: 0}
     - target: {fileID: 2748913124992463393, guid: 19eadcf8fbed56b4da77ca94c1b4145f,
         type: 3}
@@ -74342,7 +74342,7 @@ PrefabInstance:
     - target: {fileID: 9046499801171845370, guid: 85ecc59948776734280294d96850ff6b,
         type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 3230114498882038142, guid: 85ecc59948776734280294d96850ff6b, type: 3}
@@ -91302,7 +91302,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   maxHealth: 10
   currentHealth: 0
-  healthBar: {fileID: 1079676592}
+  healthBar: {fileID: 0}
 --- !u!1 &1594800876 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 6975640455810324428, guid: 2428e7e466b559e43a0e4202eae899ff,
@@ -132150,7 +132150,6 @@ SceneRoots:
   - {fileID: 8966093365745844002}
   - {fileID: 8472299938975404942}
   - {fileID: 336258553}
-  - {fileID: 46014737}
   - {fileID: 373504113}
   - {fileID: 250496786}
   - {fileID: 1928607611}
@@ -132165,7 +132164,6 @@ SceneRoots:
   - {fileID: 1118939267}
   - {fileID: 1793370903}
   - {fileID: 447374487}
-  - {fileID: 336258553}
   - {fileID: 650490063}
   - {fileID: 625920930}
   - {fileID: 1331143246}

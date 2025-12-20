@@ -305,8 +305,7 @@ public class LevelManager : MonoBehaviour
     {
         UnityServices.InitializeAsync();
         AnalyticsService.Instance.StartDataCollection();
-        if (spawnedArrow != null)
-            spawnedArrow.SetActive(false);
+
         if (arrowPrefab != null)
             arrowPrefab.SetActive(false);
         // Hide UI initially
