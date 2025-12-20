@@ -1094,7 +1094,7 @@ MonoBehaviour:
   loadingSlider: {fileID: 432903164}
   menuPanel: {fileID: 2097426270}
   optionsPanel: {fileID: 0}
-  fadePanel: {fileID: 1043313998}
+  fadePanel: {fileID: 0}
   fadeDuration: 2
   volumeSlider: {fileID: 0}
 --- !u!4 &692455406
@@ -1546,7 +1546,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 692455405}
         m_TargetAssemblyTypeName: MenuManager, Assembly-CSharp
-        m_MethodName: redirectLevelOne
+        m_MethodName: GoToCutscene
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -2085,7 +2085,6 @@ RectTransform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 2097426273}
-  - {fileID: 1043314000}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}

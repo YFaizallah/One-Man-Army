@@ -83,4 +83,9 @@ public class MenuManager : MonoBehaviour
         AudioListener.volume = value;
         PlayerPrefs.SetFloat("masterVolume", value);
     }
+
+    public void GoToCutscene()
+    {
+        SceneManager.LoadScene("Cutscene");
+    }
 }

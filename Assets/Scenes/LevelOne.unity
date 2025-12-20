@@ -12319,6 +12319,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6c9bc1d864892a6498b4c1d021e82e43, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  loadingPanel: {fileID: 0}
+  loadingSlider: {fileID: 0}
   menuPanel: {fileID: 0}
   optionsPanel: {fileID: 0}
   fadePanel: {fileID: 0}
@@ -19531,7 +19533,7 @@ PrefabInstance:
     - target: {fileID: 2748913124992463393, guid: 19eadcf8fbed56b4da77ca94c1b4145f,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: 257.6
+      value: 75.2
       objectReference: {fileID: 0}
     - target: {fileID: 2748913124992463393, guid: 19eadcf8fbed56b4da77ca94c1b4145f,
         type: 3}
@@ -19541,7 +19543,7 @@ PrefabInstance:
     - target: {fileID: 2748913124992463393, guid: 19eadcf8fbed56b4da77ca94c1b4145f,
         type: 3}
       propertyPath: m_LocalPosition.z
-      value: 21.7
+      value: -278.8
       objectReference: {fileID: 0}
     - target: {fileID: 2748913124992463393, guid: 19eadcf8fbed56b4da77ca94c1b4145f,
         type: 3}
@@ -68253,7 +68255,7 @@ PlayableDirector:
   - key: {fileID: 3042143194024009224, guid: e37511df962c9134291fba6f83e4ed0e, type: 2}
     value: {fileID: 986545721}
   - key: {fileID: 4382359520535836808, guid: e37511df962c9134291fba6f83e4ed0e, type: 2}
-    value: {fileID: 0}
+    value: {fileID: 1615183388}
   - key: {fileID: 8785107156914901301, guid: e37511df962c9134291fba6f83e4ed0e, type: 2}
     value: {fileID: 1200565530}
   - key: {fileID: -672926253072106510, guid: e37511df962c9134291fba6f83e4ed0e, type: 2}
