@@ -1,25 +1,25 @@
 using UnityEngine;
 using UnityEngine.SceneManagement;
-using UnityEngine.UI;         // for slider (legacy UI)
-using TMPro;                  // only if using TextMeshPro
+using UnityEngine.UI;
 
 public class MenuManager : MonoBehaviour
 {
+    [Header("Loading Screen")]
+    public GameObject loadingPanel;
+    public Slider loadingSlider;
+
     [Header("Panels")]
     public GameObject menuPanel;
     public GameObject optionsPanel;
 
     [Header("Options")]
-    public Slider volumeSlider;       // UI Slider
-    // public TMP_Text versionText;   // optional TMP usage
+    public Slider volumeSlider;
 
     void Start()
     {
-        // Ensure main menu shows, options hidden
         if (menuPanel != null) menuPanel.SetActive(true);
         if (optionsPanel != null) optionsPanel.SetActive(false);
 
-        // initialize slider from saved prefs
         if (volumeSlider != null)
         {
             volumeSlider.value = PlayerPrefs.GetFloat("masterVolume", 1f);
@@ -27,20 +27,12 @@ public class MenuManager : MonoBehaviour
         }
     }
 
-    // Button wired to Play
-    public void PlayGame()
-    {
-        // Replace "GameScene" with the exact name of your scene
-        SceneManager.LoadScene("LevelViewer");
-    }
-
+    // Play ? Level One (WITH loading screen)
     public void redirectLevelOne()
     {
-        // Replace "GameScene" with the exact name of your scene
         Time.timeScale = 1f;
-        SceneManager.LoadScene("LevelOne");
+        StartCoroutine(LoadLevelOneAsync());
     }
-
 
     public void RestartLevel()
     {
@@ -50,26 +42,15 @@ public class MenuManager : MonoBehaviour
 
     public void redirectMainMenu()
     {
-        // Replace "GameScene" with the exact name of your scene
         SceneManager.LoadScene("MainMenu");
     }
 
-    // Button wired to Quit
-    //public void QuitGame()
-    //{
-    //    #if UNITY_EDITOR
-    //    UnityEditor.EditorApplication.isPlaying = false;
-    //    #else
-    //    Application.Quit();
-    //    #endif
-    //}
     public void QuitGame()
     {
-        Debug.Log("Quit button pressed!"); // for testing in the Editor
+        Debug.Log("Quit button pressed!");
         Application.Quit();
     }
 
-    // Options
     public void OpenOptions()
     {
         if (menuPanel != null) menuPanel.SetActive(false);
@@ -84,8 +65,35 @@ public class MenuManager : MonoBehaviour
 
     public void SetVolume(float value)
     {
-        // Set Unity master volume (simple approach)
         AudioListener.volume = value;
         PlayerPrefs.SetFloat("masterVolume", value);
+    }
+
+    private System.Collections.IEnumerator LoadLevelOneAsync()
+    {
+        if (loadingPanel != null)
+            loadingPanel.SetActive(true);
+
+        if (loadingSlider != null)
+            loadingSlider.value = 0f;
+
+        AsyncOperation op = SceneManager.LoadSceneAsync("LevelOne");
+        op.allowSceneActivation = false;
+
+        while (!op.isDone)
+        {
+            float progress = Mathf.Clamp01(op.progress / 0.9f);
+
+            if (loadingSlider != null)
+                loadingSlider.value = progress;
+
+            if (op.progress >= 0.9f)
+            {
+                yield return new WaitForSecondsRealtime(0.2f);
+                op.allowSceneActivation = true;
+            }
+
+            yield return null;
+        }
     }
 }
